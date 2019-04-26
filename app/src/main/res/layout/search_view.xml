@@ -21,55 +21,49 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/button4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:text="Button" />
+                android:id="@+id/button9"
+                android:layout_width="31dp"
+                android:layout_height="29dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/profile_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button8"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:text="Button" />
+                android:id="@+id/button8"
+                android:layout_width="29dp"
+                android:layout_height="27dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:background="@drawable/lessonplans"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/button9"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button7"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:text="Button" />
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:text="Button" />
-        </LinearLayout>
+                android:id="@+id/button7"
+                android:layout_width="37dp"
+                android:layout_height="27dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:background="@drawable/home"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/button8"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
     </android.support.design.widget.BottomNavigationView>
 
     <EditText
@@ -146,6 +140,7 @@
                         android:layout_height="39dp"
                         android:gravity="center"
                         android:text="Level 1"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
                         app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView"
@@ -223,6 +218,7 @@
                         android:layout_height="39dp"
                         android:gravity="center"
                         android:text="Level 2"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
                         app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView"
@@ -310,6 +306,7 @@
                         android:layout_height="39dp"
                         android:gravity="center"
                         android:text="Level 3"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
                         app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView"
