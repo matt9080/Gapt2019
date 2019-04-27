@@ -27,7 +27,7 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/button9"
+                android:id="@+id/btn_profile"
                 android:layout_width="31dp"
                 android:layout_height="29dp"
                 android:layout_marginTop="6dp"
@@ -36,31 +36,31 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/button8"
+                app:layout_constraintStart_toEndOf="@+id/btn_lessons"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button8"
+                android:id="@+id/btn_lessons"
                 android:layout_width="29dp"
                 android:layout_height="27dp"
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="7dp"
                 android:background="@drawable/lessonplans"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button9"
+                app:layout_constraintEnd_toStartOf="@+id/btn_profile"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/button7"
+                app:layout_constraintStart_toEndOf="@+id/btn_home"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button7"
+                android:id="@+id/btn_home"
                 android:layout_width="37dp"
                 android:layout_height="27dp"
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="7dp"
                 android:background="@drawable/home"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button8"
+                app:layout_constraintEnd_toStartOf="@+id/btn_lessons"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -68,7 +68,7 @@
     </android.support.design.widget.BottomNavigationView>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/constraintLayout_Profile"
         android:layout_width="414dp"
         android:layout_height="253dp"
         android:layout_marginStart="8dp"
@@ -124,7 +124,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_Profile">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
