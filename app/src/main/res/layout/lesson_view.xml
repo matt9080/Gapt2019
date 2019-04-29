@@ -67,6 +67,7 @@
     </android.support.design.widget.BottomNavigationView>
 
     <ScrollView
+        android:id="@+id/scrView_lesson"
         android:layout_width="368dp"
         android:layout_height="551dp"
         android:layout_marginStart="8dp"
