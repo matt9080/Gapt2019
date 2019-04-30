@@ -15,17 +15,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.signup_view);
+        setContentView(R.layout.login_view);
 
         configureLessonsButton();
     }
 
     private void configureLessonsButton(){
-        Button btn_lessons = (Button) findViewById( R.id.btn_signup);
+        Button btn_lessons = findViewById( R.id.btn_signup);
         btn_lessons.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, SecondActivity.class);
+                Intent myIntent = new Intent(MainActivity.this, SignUpActivity.class);
                 startActivity(myIntent);
             }
         });

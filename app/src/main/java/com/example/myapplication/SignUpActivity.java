@@ -8,23 +8,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
 
-public class SecondActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_view);
+        setContentView(R.layout.signup_view);
 
         configureLessonsButton();
     }
 
     private void configureLessonsButton(){
-        Button btn_lessons = (Button) findViewById( R.id.btn_home);
+        Button btn_lessons = (Button) findViewById( R.id.btn_signup);
         btn_lessons.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                ScrollView scrView_lesson = (ScrollView) findViewById(R.id.scrView_lesson);
-            }
+
+                public void onClick(View v) {
+                    Intent myIntent = new Intent(SignUpActivity.this, HomeActivity.class);
+                    startActivity(myIntent);
+                }
+
         });
     }
 }
