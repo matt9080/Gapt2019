@@ -10,8 +10,8 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity implements
         View.OnClickListener{
 
-    private ConstraintLayout layout_login;
-    private ConstraintLayout layout_home;
+    private ConstraintLayout layout_login; //to use
+    private ConstraintLayout layout_home;   //to use
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,29 +41,8 @@ public class MainActivity extends AppCompatActivity implements
                 break;
         }
     }
-    private void configureLessonsButton(){
-        Button btn_signUpButton = findViewById( R.id.btn_signin);
-        btn_signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, SignUpActivity.class);
-                startActivity(myIntent);
-            }
-        });
 
-
-    }
-
-    private void configureLogInButton(){
-        Button btn_LoginButton = findViewById( R.id.btn_login);
-        btn_LoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v1) {
-                Intent myIntent = new Intent(MainActivity.this, LogInActivity.class);
-                startActivity(myIntent);
-            }
-        });
-    }
+    //to fill
     protected void onStart() {
         super.onStart();
     }
