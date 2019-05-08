@@ -23,7 +23,7 @@ public class LogInActivity extends AppCompatActivity {
             @Override
 
             public void onClick(View v) {
-                Intent myIntent = new Intent(LogInActivity.this, HomeActivity.class);
+                Intent myIntent = new Intent(LogInActivity.this, MainTestActivity.class);
                 startActivity(myIntent);
             }
         });
