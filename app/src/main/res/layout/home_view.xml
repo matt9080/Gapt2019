@@ -112,7 +112,7 @@
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/imageView2"
+                        android:id="@+id/image_lsn1"
                         android:layout_width="305dp"
                         android:layout_height="119dp"
                         android:layout_marginStart="22dp"
@@ -127,7 +127,7 @@
                         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/txt_title_lsn1"
                         android:layout_width="136dp"
                         android:layout_height="0dp"
                         android:layout_marginStart="16dp"
@@ -146,7 +146,7 @@
                         app:layout_constraintVertical_bias="0.0" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/txt_age_lsn1"
                         android:layout_width="85dp"
                         android:layout_height="53dp"
                         android:layout_marginStart="241dp"
@@ -269,7 +269,7 @@
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/imageView10"
+                        android:id="@+id/image_lsn1"
                         android:layout_width="106dp"
                         android:layout_height="71dp"
                         android:layout_marginStart="4dp"
