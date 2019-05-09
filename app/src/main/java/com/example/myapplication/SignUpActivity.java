@@ -31,14 +31,14 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
         setContentView(R.layout.signup_view);
 
         editTextEmail = (EditText) findViewById(R.id.email_textbox);
-        editTextPassword1 = (EditText) findViewById(R.id.su_pass1);
-        editTextPassword2 = (EditText) findViewById(R.id.su_pass2);
+        editTextPassword1 = (EditText) findViewById(R.id.pass1_textbox);
+        editTextPassword2 = (EditText) findViewById(R.id.pass2_textbox);
         progressBar = (ProgressBar) findViewById(R.id.su_progressBar);
 
         mAuth = FirebaseAuth.getInstance();
 
 
-        Button btn = (Button) findViewById(R.id.su_btn);
+        Button btn = (Button) findViewById(R.id.btn_signin);
         btn.setOnClickListener(this);
     }
 
@@ -112,7 +112,7 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.su_btn:
+            case R.id.btn_signin:
                 registerUser();
                 break;
 

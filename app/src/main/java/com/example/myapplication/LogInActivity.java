@@ -30,11 +30,11 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         mAuth = FirebaseAuth.getInstance();
 
         editTextEmail = (EditText) findViewById(R.id.email_textbox);
-        editTextPassword = (EditText) findViewById(R.id.su_pass1);
+        editTextPassword = (EditText) findViewById(R.id.pass1_textbox);
         progressBar = (ProgressBar) findViewById(R.id.su_progressBar);
 
 
-        findViewById(R.id.su_btn).setOnClickListener(this);
+        findViewById(R.id.btn_signin).setOnClickListener(this);
 
     }
 
@@ -73,14 +73,12 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
-                    //Toast.makeText(getApplicationContext(), "bla", Toast.LENGTH_SHORT).show();
                     finish();
                     Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Password incorrect", Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -101,7 +99,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()) {
 
 
-            case R.id.su_btn:
+            case R.id.btn_signin:
                 userLogin();
                 break;
         }

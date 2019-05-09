@@ -25,7 +25,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/su_btn"
+        android:id="@+id/btn_signin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="93dp"
@@ -36,7 +36,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/su_pass2" />
+        app:layout_constraintTop_toBottomOf="@+id/pass2_textbox" />
 
     <EditText
         android:id="@+id/email_textbox"
@@ -48,21 +48,21 @@
         android:layout_marginRight="35dp"
         android:background="@drawable/enter_textbox"
         android:ems="10"
-        android:hint="Username..."
+        android:hint="Email..."
         android:inputType="textPersonName"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/secondary_text_dark_nodisable"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/su_pass1"
+        app:layout_constraintBottom_toTopOf="@+id/pass1_textbox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <EditText
-        android:id="@+id/su_pass1"
+        android:id="@+id/pass1_textbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
@@ -78,13 +78,13 @@
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/secondary_text_dark_nodisable"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/su_pass2"
+        app:layout_constraintBottom_toTopOf="@+id/pass2_textbox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email_textbox" />
 
     <EditText
-        android:id="@+id/su_pass2"
+        android:id="@+id/pass2_textbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
@@ -100,10 +100,10 @@
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/secondary_text_dark_nodisable"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/su_btn"
+        app:layout_constraintBottom_toTopOf="@+id/btn_signin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/su_pass1" />
+        app:layout_constraintTop_toBottomOf="@+id/pass1_textbox" />
 
     <ProgressBar
         android:id="@+id/su_progressBar"
