@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_view);
 
-        Button one = (Button) findViewById(R.id.btn_signup);
+        Button one = (Button) findViewById(R.id.su_btn);
         one.setOnClickListener(this); // calling onClick() method
         Button two = (Button) findViewById(R.id.btn_login);
         two.setOnClickListener(this);
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.btn_signup:
+            case R.id.su_btn:
                 Intent myIntent = new Intent(MainActivity.this, SignUpActivity.class);
                 startActivity(myIntent);
                 break;
