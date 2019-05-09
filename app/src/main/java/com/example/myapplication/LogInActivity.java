@@ -34,7 +34,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         progressBar = (ProgressBar) findViewById(R.id.su_progressBar);
 
 
-        findViewById(R.id.btn_signin).setOnClickListener(this);
+        findViewById(R.id.btn_su).setOnClickListener(this);
 
     }
 
@@ -99,7 +99,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()) {
 
 
-            case R.id.btn_signin:
+            case R.id.btn_su:
                 userLogin();
                 break;
         }

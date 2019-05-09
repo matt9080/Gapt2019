@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_signin"
+        android:id="@+id/btn_su"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -80,7 +80,7 @@
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/secondary_text_dark_nodisable"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_signin"
+        app:layout_constraintBottom_toTopOf="@+id/btn_su"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
