@@ -80,7 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 saveUserInformation();
                 finish();
-                Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
+                Intent intent = new Intent(ProfileActivity.this, MainTestActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
