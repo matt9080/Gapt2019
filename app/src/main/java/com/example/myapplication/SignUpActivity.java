@@ -91,7 +91,7 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
                     finish();
-                    Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this, ProfileActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
