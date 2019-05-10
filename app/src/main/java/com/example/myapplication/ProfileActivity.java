@@ -55,14 +55,14 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.edit_profile_view);
         mAuth = FirebaseAuth.getInstance();
 
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
         editText = (EditText) findViewById(R.id.editUsername);
-        imageView = (ImageView) findViewById(R.id.imageView);
+        imageView = (ImageView) findViewById(R.id.profileViewImage);
         progressBar = (ProgressBar) findViewById(R.id.profileProgressBar);
         //textView = (TextView) findViewById(R.id.textViewVerified);
 
@@ -88,7 +88,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-
+/*
     @Override
     protected void onStart() {
         super.onStart();
@@ -97,7 +97,7 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
         }
     }
-
+*/
     private void loadUserInformation() {
         final FirebaseUser user = mAuth.getCurrentUser();
 
@@ -112,7 +112,7 @@ public class ProfileActivity extends AppCompatActivity {
                 editText.setText(user.getDisplayName());
             }
 
-            if (user.isEmailVerified()) {
+            /*if (user.isEmailVerified()) {
                 textView.setText("Email Verified");
             } else {
                 textView.setText("Email Not Verified (Click to Verify)");
@@ -127,7 +127,7 @@ public class ProfileActivity extends AppCompatActivity {
                         });
                     }
                 });
-            }
+            }*/
         }
     }
 
