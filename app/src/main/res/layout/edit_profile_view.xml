@@ -9,7 +9,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout_Profile"
         android:layout_width="414dp"
-        android:layout_height="253dp"
+        android:layout_height="301dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -18,21 +18,24 @@
         android:layout_marginBottom="520dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.071">
 
         <ImageView
             android:id="@+id/coverViewImage"
             android:layout_width="413dp"
-            android:layout_height="196dp"
+            android:layout_height="231dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/cover_default"
+            app:layout_constraintBottom_toTopOf="@+id/profileViewImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.28"
+            app:layout_constraintVertical_bias="0.0"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <ImageView
@@ -48,7 +51,7 @@
             app:layout_constraintHorizontal_bias="0.488"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_bias="0.913"
             tools:srcCompat="@tools:sample/avatars" />
 
         <ProgressBar
@@ -57,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:layout_editor_absoluteX="183dp"
-            tools:layout_editor_absoluteY="163dp" />
+            tools:layout_editor_absoluteY="206dp" />
 
         <ProgressBar
             android:id="@+id/coverProgressBar"
@@ -65,54 +68,73 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:layout_editor_absoluteX="183dp"
-            tools:layout_editor_absoluteY="57dp" />
+            tools:layout_editor_absoluteY="88dp" />
     </android.support.constraint.ConstraintLayout>
 
-    <EditText
-        android:id="@+id/editUsername"
-        android:layout_width="307dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginLeft="52dp"
-        android:layout_marginEnd="52dp"
-        android:layout_marginRight="52dp"
-        android:background="@drawable/enter_textbox_color"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="409dp"
+        android:layout_height="268dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.642"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="308dp" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_Profile">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="124dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="41dp"
-        android:layout_marginLeft="41dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:background="@drawable/signin_button"
-        android:text="Cancel"
-        android:textColor="@color/common_google_signin_btn_text_light_focused"
-        app:layout_constraintEnd_toStartOf="@+id/profilesave"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="446dp" />
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="124dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="41dp"
+            android:layout_marginLeft="41dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/signin_button"
+            android:text="Cancel"
+            android:textColor="@color/common_google_signin_btn_text_light_focused"
+            app:layout_constraintEnd_toStartOf="@+id/profilesave"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editUsername" />
 
-    <Button
-        android:id="@+id/profilesave"
-        android:layout_width="124dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginEnd="41dp"
-        android:layout_marginRight="41dp"
-        android:background="@drawable/signin_button"
-        android:text="Save"
-        android:textColor="@color/common_google_signin_btn_text_light_focused"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button2"
-        tools:layout_editor_absoluteY="445dp" />
+        <Button
+            android:id="@+id/profilesave"
+            android:layout_width="124dp"
+            android:layout_height="53dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/signin_button"
+            android:text="Save"
+            android:textColor="@color/common_google_signin_btn_text_light_focused"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editUsername" />
+
+        <EditText
+            android:id="@+id/editUsername"
+            android:layout_width="307dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/enter_textbox_color"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.523"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+            app:layout_constraintVertical_bias="0.2" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
