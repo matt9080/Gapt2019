@@ -11,7 +11,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainTestActivity extends AppCompatActivity {
+    private static final String TAG = "ViewDatabase";
+
+    private FirebaseDatabase mFirebaseDatabase;
+    //private FirebaseAuth mAuth;
+    //private FirebaseAuth.AuthStateListener nAuthListener;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +52,7 @@ public class MainTestActivity extends AppCompatActivity {
         });
 
         navigationView.setSelectedItemId(R.id.home);
+
     }
 
     private void setFragment(Fragment fragment){

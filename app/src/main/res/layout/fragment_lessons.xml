@@ -7,15 +7,19 @@
     tools:context=".LessonsFragment">
 
     <ScrollView
-        android:id="@+id/scrView_lesson"
+        android:id="@+id/scrollView_lessons"
+        style="@android:style/Widget.Holo.Light.ScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="662dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:clipToPadding="false"
+        android:fillViewport="false"
+        android:scrollbarStyle="insideOverlay"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -24,25 +28,192 @@
         app:layout_constraintVertical_bias="0.0">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/scrlayout_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <android.support.v7.widget.CardView
-                android:id="@+id/cardView8"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginRight="12dp"
-                android:padding="10dp"
+                android:id="@+id/cardView12"
+                android:layout_width="362dp"
+                android:layout_height="102dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="767dp"
+                android:background="@drawable/lessonplan_container"
                 app:cardBackgroundColor="#468FF5"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="20dp"
+                app:contentPadding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView4">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="71dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="4dp"
+                        android:text="Paper Helicopter"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="36sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView13"
+                android:layout_width="359dp"
+                android:layout_height="215dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="150dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="300dp"
+                android:background="@drawable/lessonplan_container"
+                app:cardBackgroundColor="#468FF5"
+                app:cardCornerRadius="10dp"
+                app:contentPadding="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_editor_absoluteX="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_materials"
+                        android:layout_width="wrap_content"
+                        android:layout_height="53dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="120dp"
+                        android:text="Materials Needed"
+                        android:textColor="@android:color/white"
+                        android:textSize="30sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_list_materials"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="A4 Paper\nPaper Clip"
+                        android:textColor="@android:color/white"
+                        android:textSize="25sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView11"
+                android:layout_width="351dp"
+                android:layout_height="239dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="370dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="245dp"
+                android:background="@drawable/lessonplan_container"
+                app:cardBackgroundColor="#468FF5"
+                app:cardCornerRadius="10dp"
+                app:contentPadding="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/txt_step1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="53dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="120dp"
+                        android:text="Step1"
+                        android:textColor="@android:color/white"
+                        android:textSize="30sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_step1_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Fold paper in half and cut in half. Repeat for 2 times until you reached the size of the final image."
+                        android:textColor="@android:color/white"
+                        android:textSize="25sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView17"
+                android:layout_width="351dp"
+                android:layout_height="239dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="723dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="245dp"
+                android:background="@drawable/lessonplan_container"
+                app:cardBackgroundColor="#468FF5"
+                app:cardCornerRadius="10dp"
+                app:contentPadding="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -50,204 +221,94 @@
 
                     <TextView
                         android:id="@+id/txt_step2"
-                        android:layout_width="320dp"
-                        android:layout_height="40dp"
-                        android:gravity="center"
-                        android:text="Step 2"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"
-                        app:layout_constraintBottom_toTopOf="@+id/imageView16"
-                        app:layout_constraintEnd_toEndOf="@+id/imageView16"
-                        app:layout_constraintStart_toStartOf="@+id/imageView16"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/image_step2"
-                        android:layout_width="315dp"
-                        android:layout_height="90dp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView13"
-                        app:layout_constraintEnd_toEndOf="@+id/textView13"
-                        app:layout_constraintStart_toStartOf="@+id/textView13"
-                        app:layout_constraintTop_toBottomOf="@+id/textView11"
-                        tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-                    <TextView
-                        android:id="@+id/text_step2desc"
-                        android:layout_width="313dp"
-                        android:layout_height="75dp"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginEnd="21dp"
-                        android:layout_marginRight="21dp"
-                        android:text="Description of step 2"
-                        android:textColor="@android:color/white"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/imageView16" />
-                </android.support.constraint.ConstraintLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardView4"
-                android:layout_width="0dp"
-                android:layout_height="238dp"
-                android:layout_margin="10dp"
-                android:padding="10dp"
-                app:cardBackgroundColor="#468FF5"
-                app:cardCornerRadius="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/cardView8"
-                app:layout_constraintEnd_toEndOf="@+id/cardView8"
-                app:layout_constraintStart_toStartOf="@+id/cardView8"
-                app:layout_constraintTop_toBottomOf="@+id/cardView">
-
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/text_step1"
-                        android:layout_width="314dp"
-                        android:layout_height="40dp"
-                        android:gravity="center"
-                        android:text="Step 1"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"
-                        app:layout_constraintBottom_toTopOf="@+id/imageView11"
-                        app:layout_constraintEnd_toEndOf="@+id/imageView11"
-                        app:layout_constraintStart_toStartOf="@+id/imageView11"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/image_step1"
-                        android:layout_width="310dp"
-                        android:layout_height="101dp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView2"
-                        app:layout_constraintEnd_toEndOf="@+id/textView2"
-                        app:layout_constraintStart_toStartOf="@+id/textView2"
-                        app:layout_constraintTop_toBottomOf="@+id/textView10"
-                        tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-                    <TextView
-                        android:id="@+id/text_step1desc"
-                        android:layout_width="311dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginEnd="21dp"
-                        android:layout_marginRight="21dp"
-                        android:text="Description of step 1"
-                        android:textColor="@android:color/white"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/imageView11" />
-                </android.support.constraint.ConstraintLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardView"
-                android:layout_width="0dp"
-                android:layout_height="163dp"
-                android:layout_margin="10dp"
-                android:padding="10dp"
-                app:cardBackgroundColor="#468FF5"
-                app:cardCornerRadius="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/cardView4"
-                app:layout_constraintEnd_toEndOf="@+id/cardView4"
-                app:layout_constraintStart_toStartOf="@+id/cardView4"
-                app:layout_constraintTop_toBottomOf="@+id/cardView3">
-
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/sssss22"
-                        android:layout_width="331dp"
-                        android:layout_height="47dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="9dp"
-                        android:layout_marginEnd="6dp"
-                        android:layout_marginRight="6dp"
-                        android:layout_marginBottom="9dp"
-                        android:gravity="center"
-                        android:text="Materials Needed"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView9"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView9"
-                        android:layout_width="324dp"
-                        android:layout_height="90dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="153dp"
+                        android:layout_marginTop="50dp"
                         android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginRight="10dp"
-                        android:text="TextView"
-                        android:textColor="@android:color/white"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/sssss22" />
-                </android.support.constraint.ConstraintLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardView3"
-                android:layout_width="0dp"
-                android:layout_height="83dp"
-                android:layout_margin="10dp"
-                android:padding="10dp"
-                app:cardBackgroundColor="#468FF5"
-                app:cardCornerRadius="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/cardView"
-                app:layout_constraintEnd_toEndOf="@+id/cardView"
-                app:layout_constraintStart_toStartOf="@+id/cardView"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/imageView9"
-                        android:layout_width="106dp"
-                        android:layout_height="67dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:scrollbarAlwaysDrawHorizontalTrack="true"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/editText"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-                    <TextView
-                        android:id="@+id/editText"
-                        android:layout_width="217dp"
-                        android:layout_height="61dp"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginLeft="6dp"
-                        android:layout_marginTop="11dp"
-                        android:layout_marginEnd="12dp"
-                        android:layout_marginRight="12dp"
-                        android:layout_marginBottom="11dp"
-                        android:ems="10"
-                        android:inputType="textPersonName"
-                        android:text="Robotic Arm"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="120dp"
+                        android:text="Step2"
                         android:textColor="@android:color/white"
                         android:textSize="30sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/imageView9"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_step2_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Cut the final piece of paper in half and draw lines as shown below."
+                        android:textColor="@android:color/white"
+                        android:textSize="25sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView18"
+                android:layout_width="351dp"
+                android:layout_height="239dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="1023dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="245dp"
+                android:background="@drawable/lessonplan_container"
+                app:cardBackgroundColor="#468FF5"
+                app:cardCornerRadius="10dp"
+                app:contentPadding="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/txt_step3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="153dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="120dp"
+                        android:text="Step3"
+                        android:textColor="@android:color/white"
+                        android:textSize="30sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_step3_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Cut the solid lines and fold the dotted lines as shown below. Follow the images from left to right and the paper helicopter is complete."
+                        android:textColor="@android:color/white"
+                        android:textSize="25sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                 </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>
 
