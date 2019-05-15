@@ -6,14 +6,8 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,19 +30,24 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 
-public class ProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity {
 
     private static final int CHOOSE_IMAGE = 101;
 
     TextView textView;
-    ImageView imageView;
-    EditText editText;
+    ImageView profileView;
+    ImageView coverView;
+    EditText editName;
 
     Uri uriProfileImage;
+    Uri uriCoverImage;
     ProgressBar progressBar;
 
     StorageReference profileImageRef;
     String profileImageUrl;
+
+    StorageReference coverImageRef;
+    String coverImageUrl;
 
     FirebaseAuth mAuth;
 
@@ -61,12 +60,20 @@ public class ProfileActivity extends AppCompatActivity {
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-        editText = (EditText) findViewById(R.id.editUsername);
-        imageView = (ImageView) findViewById(R.id.profileViewImage);
+        editName = (EditText) findViewById(R.id.editUsername);
+        profileView = (ImageView) findViewById(R.id.profileViewImage);
+        coverView = (ImageView) findViewById(R.id.coverViewImage);
         progressBar = (ProgressBar) findViewById(R.id.profileProgressBar);
         //textView = (TextView) findViewById(R.id.textViewVerified);
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        profileView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showImageChooser();
+            }
+        });
+
+        coverView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showImageChooser();
@@ -80,7 +87,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 saveUserInformation();
                 finish();
-                Intent intent = new Intent(ProfileActivity.this, MainTestActivity.class);
+                Intent intent = new Intent(EditProfileActivity.this, MainTestActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -88,16 +95,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-/*
+
     @Override
     protected void onStart() {
         super.onStart();
-        if (mAuth.getCurrentUser() == null) {
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
-        }
+        loadUserInformation();
     }
-*/
+
     private void loadUserInformation() {
         final FirebaseUser user = mAuth.getCurrentUser();
 
@@ -105,11 +109,17 @@ public class ProfileActivity extends AppCompatActivity {
             if (user.getPhotoUrl() != null) {
                 Glide.with(this)
                         .load(user.getPhotoUrl().toString())
-                        .into(imageView);
+                        .into(profileView);
+            }
+
+            if (user.getPhotoUrl() != null) {
+                Glide.with(this)
+                        .load(user.getPhotoUrl().toString())
+                        .into(coverView);
             }
 
             if (user.getDisplayName() != null) {
-                editText.setText(user.getDisplayName());
+                editName.setText(user.getDisplayName());
             }
 
             /*if (user.isEmailVerified()) {
@@ -122,7 +132,7 @@ public class ProfileActivity extends AppCompatActivity {
                         user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(ProfileActivity.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EditProfileActivity.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -135,19 +145,33 @@ public class ProfileActivity extends AppCompatActivity {
     private void saveUserInformation() {
 
 
-        String displayName = editText.getText().toString();
+        String displayName = editName.getText().toString();
 
         if (displayName.isEmpty()) {
-            editText.setError("Name required");
-            editText.requestFocus();
+            editName.setError("Name required");
+            editName.requestFocus();
             return;
         }
 
         FirebaseUser user = mAuth.getCurrentUser();
 
-        if (user != null && profileImageUrl != null) {
+        if (user != null) {
             UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
                     .setDisplayName(displayName)
+                    .build();
+
+            user.updateProfile(profile)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(EditProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+        if (profileImageUrl != null) {
+            UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
                     .setPhotoUri(Uri.parse(profileImageUrl))
                     .build();
 
@@ -156,7 +180,22 @@ public class ProfileActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(ProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EditProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+        if (coverImageUrl != null) {
+            UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
+                    .setPhotoUri(Uri.parse(coverImageUrl))
+                    .build();
+
+            user.updateProfile(profile)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(EditProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -169,9 +208,20 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             uriProfileImage = data.getData();
+            uriCoverImage = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriProfileImage);
-                imageView.setImageBitmap(bitmap);
+                profileView.setImageBitmap(bitmap);
+
+                uploadImageToFirebaseStorage();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriCoverImage);
+                coverView.setImageBitmap(bitmap);
 
                 uploadImageToFirebaseStorage();
 
@@ -184,6 +234,8 @@ public class ProfileActivity extends AppCompatActivity {
     private void uploadImageToFirebaseStorage() {
         profileImageRef =
                 FirebaseStorage.getInstance().getReference("profilepics/" + System.currentTimeMillis() + ".jpg");
+        coverImageRef =
+                FirebaseStorage.getInstance().getReference("coverpics/" + System.currentTimeMillis() + ".jpg");
 
         if (uriProfileImage != null) {
             progressBar.setVisibility(View.VISIBLE);
@@ -199,7 +251,26 @@ public class ProfileActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressBar.setVisibility(View.GONE);
-                            Toast.makeText(ProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+
+        if (uriCoverImage != null) {
+            progressBar.setVisibility(View.VISIBLE);
+            coverImageRef.putFile(uriCoverImage)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressBar.setVisibility(View.GONE);
+                            coverImageUrl = coverImageRef.getDownloadUrl().toString();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(EditProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -234,6 +305,6 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Profile Image"), CHOOSE_IMAGE);
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), CHOOSE_IMAGE);
     }
 }

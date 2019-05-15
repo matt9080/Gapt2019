@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -58,13 +57,13 @@ public class MainActivity extends AppCompatActivity implements
 
             final FirebaseUser user = mAuth.getCurrentUser();
 
-            if (user != null) {
+
                 if (user.getDisplayName() != null) {
                     startActivity(new Intent(this, MainTestActivity.class));
                 } else {
-                    startActivity(new Intent(this, ProfileActivity.class));
+                    startActivity(new Intent(this, EditProfileActivity.class));
                 }
-            }
+
 
         }
     }
