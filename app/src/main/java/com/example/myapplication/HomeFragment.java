@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +37,10 @@ public class HomeFragment extends Fragment {
     private List<Activities> usersList;
     private FirebaseFirestore mFirestore;
     private TextView title;
+    //======
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+    RecyclerView.Adapter adapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -50,6 +55,16 @@ public class HomeFragment extends Fragment {
         mMainList = (RecyclerView) v.findViewById(R.id.main_list);
         title = (TextView) v.findViewById(R.id.txt_materials);
 
+
+
+
+        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        adapter = new RecyclerAdapter();
+        recyclerView.setAdapter(adapter);
 
         //mMainList.setHasFixedSize(true);
         //mMainList.setLayoutManager(new LinearLayoutManager(this));
