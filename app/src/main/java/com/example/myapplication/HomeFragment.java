@@ -1,8 +1,6 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
-
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,10 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -30,14 +26,8 @@ import javax.annotation.Nullable;
 public class HomeFragment extends Fragment {
 
     private static final String TAG = "MainActivity";
-
-    //private RecyclerView mMainList;
-    //private InfoListAdapter infoListAdapter;
-
     private List<Activities> usersList;
-    private FirebaseFirestore mFirestore;
-    //private TextView title;
-    //======
+
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
@@ -49,7 +39,9 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        FirebaseFirestore mFirestore;
 
+        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         mFirestore = FirebaseFirestore.getInstance();
         usersList = new ArrayList<>();
@@ -57,14 +49,6 @@ public class HomeFragment extends Fragment {
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
-
-        //mMainList.setHasFixedSize(true);
-        //mMainList.setLayoutManager(new LinearLayoutManager(this));
-        //mMainList.setAdapter(infoListAdapter);
-
-        //usersList = new ArrayList<>();
-       // infoListAdapter = new InfoListAdapter(usersList);
 
         mFirestore.collection("activities").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -85,20 +69,11 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
-       // mMainList = (RecyclerView) v.findViewById(R.id.main_list);
-        //title = (TextView) v.findViewById(R.id.txt_materials);
-
-
-
-        // Inflate the layout for this fragment
         return v;
     }
 
     protected void OnStart(){
         super.onStart();
-
-
     }
 }
 

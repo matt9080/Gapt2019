@@ -13,8 +13,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity implements
         View.OnClickListener{
 
-    private ConstraintLayout layout_login; //to use
-    private ConstraintLayout layout_home;   //to use
+    //private ConstraintLayout layout_login; //to use
+    //private ConstraintLayout layout_home;   //to use
     FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements
         one.setOnClickListener(this); // calling onClick() method
         Button two = (Button) findViewById(R.id.btn_login);
         two.setOnClickListener(this);
-
     }
 
     public void onClick(View v) {
@@ -56,22 +55,17 @@ public class MainActivity extends AppCompatActivity implements
             finish();
 
             final FirebaseUser user = mAuth.getCurrentUser();
-
-
                 if (user.getDisplayName() != null) {
                     startActivity(new Intent(this, MainTestActivity.class));
                 } else {
                     startActivity(new Intent(this, EditProfileActivity.class));
                 }
-
-
         }
     }
 
     protected void onResume() {
         super.onResume();
     }
-
     protected void onPause() {
         super.onPause();
     }
