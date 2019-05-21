@@ -31,12 +31,12 @@ public class HomeFragment extends Fragment {
 
     private static final String TAG = "MainActivity";
 
-    private RecyclerView mMainList;
-    private InfoListAdapter infoListAdapter;
+    //private RecyclerView mMainList;
+    //private InfoListAdapter infoListAdapter;
 
     private List<Activities> usersList;
     private FirebaseFirestore mFirestore;
-    private TextView title;
+    //private TextView title;
     //======
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -52,26 +52,19 @@ public class HomeFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         mFirestore = FirebaseFirestore.getInstance();
-        mMainList = (RecyclerView) v.findViewById(R.id.main_list);
-        title = (TextView) v.findViewById(R.id.txt_materials);
-
-
-
+        usersList = new ArrayList<>();
 
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
 
-        adapter = new RecyclerAdapter();
-        recyclerView.setAdapter(adapter);
-
         //mMainList.setHasFixedSize(true);
         //mMainList.setLayoutManager(new LinearLayoutManager(this));
         //mMainList.setAdapter(infoListAdapter);
 
-        usersList = new ArrayList<>();
-        infoListAdapter = new InfoListAdapter(usersList);
+        //usersList = new ArrayList<>();
+       // infoListAdapter = new InfoListAdapter(usersList);
 
         mFirestore.collection("activities").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -87,8 +80,16 @@ public class HomeFragment extends Fragment {
                         usersList.add(users);
                     }
                 }
+                adapter = new RecyclerAdapter(usersList);
+                recyclerView.setAdapter(adapter);
             }
         });
+
+
+       // mMainList = (RecyclerView) v.findViewById(R.id.main_list);
+        //title = (TextView) v.findViewById(R.id.txt_materials);
+
+
 
         // Inflate the layout for this fragment
         return v;

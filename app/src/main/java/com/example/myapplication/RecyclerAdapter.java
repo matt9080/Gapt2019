@@ -1,6 +1,6 @@
 package com.example.myapplication;
 
-
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,47 +9,45 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+import java.util.Objects;
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
+    @NonNull
+    public List<Activities> usersList;
+    public RecyclerAdapter(List<Activities> usersList){
+        this.usersList = usersList;
+    }
     private String[] titles = {"Chapter One",
             "Chapter Two",
             "Chapter Three",
-            "Chapter Four",
-            "Chapter Five",
-            "Chapter Six",
-            "Chapter Seven",
-            "Chapter Eight"};
+            "Chapter Four"};
 
     private String[] details = {"Item one details",
             "Item two details", "Item three details",
-            "Item four details", "Item file details",
-            "Item six details", "Item seven details",
-            "Item eight details"};
+            "Item four details"};
 
     private int[] images = { R.drawable.logo,
             R.drawable.logo,
             R.drawable.logo,
-            R.drawable.logo,
-            R.drawable.logo,
-            R.drawable.logo,
-            R.drawable.logo,
-            R.drawable.logo };
+            R.drawable.logo,};
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
         public int currentItem;
-        public ImageView itemImage;
-        public TextView itemTitle;
-        public TextView itemDetail;
+        //public ImageView itemImage;
+        public TextView itemName;
+        public TextView itemAge;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            itemImage = (ImageView)itemView.findViewById(R.id.item_image);
-            itemTitle = (TextView)itemView.findViewById(R.id.item_title);
-            itemDetail =
+            //itemImage = (ImageView)itemView.findViewById(R.id.item_image);
+            itemName = (TextView)itemView.findViewById(R.id.item_title);
+            itemAge =
                     (TextView)itemView.findViewById(R.id.item_detail);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            /*itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     int position = getAdapterPosition();
 
@@ -58,7 +56,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                             .setAction("Action", null).show();
 
                 }
-            });
+            });*/
         }
     }
 
@@ -72,13 +70,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        viewHolder.itemTitle.setText(titles[i]);
-        viewHolder.itemDetail.setText(details[i]);
-        viewHolder.itemImage.setImageResource(images[i]);
+
+        Activities activity;
+        activity = usersList.get(i);
+        viewHolder.itemName.setText(activity.getName());
+        viewHolder.itemAge.setText(activity.getAge());
+        //viewHolder.itemImage.setImageResource(images[i]);
     }
 
     @Override
     public int getItemCount() {
-        return titles.length;
+        return usersList.size();
     }
 }
