@@ -96,7 +96,7 @@
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/profilepic"
             android:layout_width="103dp"
             android:layout_height="89dp"
             android:layout_marginStart="8dp"

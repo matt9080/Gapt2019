@@ -17,11 +17,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import android.content.Intent;
 
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class SignUpActivity extends AppCompatActivity  implements View.OnClickListener {
 
     ProgressBar progressBar;
-    EditText editTextEmail, editTextPassword1, editTextPassword2;
+    EditText editTextUsername, editTextEmail, editTextPassword;
 
     private FirebaseAuth mAuth;
 
@@ -30,9 +32,9 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_view);
 
+        editTextUsername = (EditText) findViewById(R.id.usename_textbox);
         editTextEmail = (EditText) findViewById(R.id.email_textbox);
-        editTextPassword1 = (EditText) findViewById(R.id.pass1_textbox);
-        editTextPassword2 = (EditText) findViewById(R.id.pass2_textbox);
+        editTextPassword = (EditText) findViewById(R.id.pass_textbox);
         progressBar = (ProgressBar) findViewById(R.id.su_progressBar);
 
         mAuth = FirebaseAuth.getInstance();
@@ -43,9 +45,9 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
     }
 
     private void registerUser() {
+        final String username = editTextUsername.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
-        String password1 = editTextPassword1.getText().toString().trim();
-        String password2 = editTextPassword2.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
 
         if (email.isEmpty()) {
             editTextEmail.setError("Email is required");
@@ -59,39 +61,46 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
             return;
         }
 
-        if (password1.isEmpty()) {
-            editTextPassword1.setError("Password is required");
-            editTextPassword1.requestFocus();
+        if (password.isEmpty()) {
+            editTextPassword.setError("Password is required");
+            editTextPassword.requestFocus();
             return;
         }
 
-        if (password2.isEmpty()) {
-            editTextPassword2.setError("Re-Enter Password is required");
-            editTextPassword2.requestFocus();
+        if (password.length() < 6) {
+            editTextPassword.setError("Minimum length of password should be 6");
+            editTextPassword.requestFocus();
             return;
         }
 
-        if (password1.length() < 6) {
-            editTextPassword1.setError("Minimum lenght of password should be 6");
-            editTextPassword1.requestFocus();
+        if (username.isEmpty()) {
+            editTextUsername.setError("Username is required");
+            editTextUsername.requestFocus();
             return;
         }
 
-        if (!(password2.equals(password1))) {
-            editTextPassword2.setError("Passwords do not match");
-            editTextPassword2.requestFocus();
+        if (username.length() < 4 || username.length() > 16 ) {
+            editTextUsername.setError("Length should be between 4 and 16 characters");
+            editTextUsername.requestFocus();
             return;
         }
 
         progressBar.setVisibility(View.VISIBLE);
 
-        mAuth.createUserWithEmailAndPassword(email, password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
+                    FirebaseUser user = mAuth.getCurrentUser();
+
+                    UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(username)
+                                .build();
+                    user.updateProfile(profile);
+
                     finish();
-                    Intent intent = new Intent(SignUpActivity.this, EditProfileActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this, MainTestActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
