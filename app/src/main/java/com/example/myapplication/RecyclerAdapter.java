@@ -6,17 +6,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.util.List;
+import java.util.Objects;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     @NonNull
     public List<Activities> usersList;
-
     public RecyclerAdapter(List<Activities> usersList){
         this.usersList = usersList;
     }
+    private String[] titles = {"Chapter One",
+            "Chapter Two",
+            "Chapter Three",
+            "Chapter Four"};
+
+    private String[] details = {"Item one details",
+            "Item two details", "Item three details",
+            "Item four details"};
 
     private int[] images = { R.drawable.logo,
             R.drawable.logo,
@@ -25,6 +35,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
+        public int currentItem;
         //public ImageView itemImage;
         public TextView itemName;
         public TextView itemAge;
@@ -33,7 +44,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             super(itemView);
             //itemImage = (ImageView)itemView.findViewById(R.id.item_image);
             itemName = (TextView)itemView.findViewById(R.id.item_title);
-            itemAge = (TextView)itemView.findViewById(R.id.item_detail);
+            itemAge =
+                    (TextView)itemView.findViewById(R.id.item_detail);
+
+            /*itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    int position = getAdapterPosition();
+
+                    Snackbar.make(v, "Click detected on item " + position,
+                            Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+            });*/
         }
     }
 
