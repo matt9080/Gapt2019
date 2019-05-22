@@ -1,8 +1,11 @@
 package com.example.myapplication;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 
 import android.support.annotation.NonNull;
@@ -35,6 +38,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
 
         findViewById(R.id.btn_su).setOnClickListener(this);
+        findViewById(R.id.forgotPassword).setOnClickListener(this);
 
     }
 
@@ -84,8 +88,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -94,7 +96,53 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_su:
                 userLogin();
                 break;
+            case R.id.forgotPassword:
+                forgotPass();
+                break;
         }
     }
+
+    public void forgotPass() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Forgot Password?");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT );
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (input.getText().toString().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Email required", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                auth.sendPasswordResetEmail(input.getText().toString())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), "Reset Password Email Sent", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+
 }
 

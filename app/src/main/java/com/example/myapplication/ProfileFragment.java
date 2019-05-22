@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.text.InputType;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -47,7 +50,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         profilepic = (ImageView) v.findViewById(R.id.profilepic);
-        username = (TextView) v.findViewById(R.id.username);
+        username = (TextView) v.findViewById(R.id.profileUsername);
         mAuth = FirebaseAuth.getInstance();
         loadUserInformation();
 
@@ -99,17 +102,13 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.changeUsername:
-                Intent myIntent = new Intent(getActivity(), EditProfileActivity.class);
-                getActivity().startActivity(myIntent);
+                changeUsername();
                 return true;
             case R.id.changePassword:
-
-
-                changeUsername();
-
+                changePassword();
                 return true;
             case R.id.changeEmail:
-                Toast.makeText(getActivity(), "Item 3 clicked", Toast.LENGTH_SHORT).show();
+                changeEmail();
                 return true;
             case R.id.popupLogout:
                 mAuth = FirebaseAuth.getInstance();
@@ -123,57 +122,213 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         }
     }
 
-    public void changeUsername() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Title");
+    protected void changePassword() {
 
-        // Set up the input
-        final EditText input = new EditText(getActivity());
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text| InputType.TYPE_TEXT_VARIATION_PASSWORD
-        input.setInputType(InputType.TYPE_CLASS_TEXT );
-        builder.setView(input);
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        View promptView = layoutInflater.inflate(R.layout.dialogbox, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setView(promptView);
 
-        // Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (input.getText().toString().isEmpty()) {
-                    Toast.makeText(getActivity(), "Name required", Toast.LENGTH_SHORT).show();
-                }
+        final TextView title = (TextView) promptView.findViewById(R.id.dialogboxTitle);
+        title.setText("Change Password");
+        final EditText input1 = (EditText) promptView.findViewById(R.id.input1);
+        input1.setHint("Old Password...");
+        final EditText input2 = (EditText) promptView.findViewById(R.id.input2);
+        input2.setHint("New Password...");
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (input1.getText().toString().isEmpty()) {
+                            Toast.makeText(getActivity(), "Old password required", Toast.LENGTH_SHORT).show();
+                            changePassword();
+                            return;
 
-                if (input.getText().toString().length() < 4 || input.getText().toString().length() > 16 ) {
+                        }
+                        if (input2.getText().toString().isEmpty()) {
+                            Toast.makeText(getActivity(), "New password required", Toast.LENGTH_SHORT).show();
+                            changePassword();
+                            return;
+                        }
+                        if (input2.length() < 6) {
+                            Toast.makeText(getActivity(), "Minimum length of the new password should be 6", Toast.LENGTH_SHORT).show();
+                            changePassword();
+                            return;
+                        }
 
-                    Toast.makeText(getActivity(), "Length should be between 4 and 16 characters", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                FirebaseUser user = mAuth.getCurrentUser();
+                        AuthCredential credential = EmailAuthProvider
+                                .getCredential(user.getEmail(), input1.getText().toString());
 
-                if (user != null) {
-                    UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(input.getText().toString())
-                            .build();
+                        user.reauthenticate(credential)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            user.updatePassword(input2.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Toast.makeText(getActivity(), "Password updated", Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+                                        } else {
+                                            Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
-                    user.updateProfile(profile)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        loadUserInformation();
+                                        }
                                     }
-                                }
-                            });
-                }
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+                                });
 
-        builder.show();
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
+    protected void changeEmail() {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        View promptView = layoutInflater.inflate(R.layout.dialogbox, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setView(promptView);
+
+        final TextView title = (TextView) promptView.findViewById(R.id.dialogboxTitle);
+        title.setText("Change Email");
+        final EditText input1 = (EditText) promptView.findViewById(R.id.input1);
+        input1.setHint("New Email...");
+        final EditText input2 = (EditText) promptView.findViewById(R.id.input2);
+        input2.setHint("Password...");
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (input1.getText().toString().isEmpty()) {
+                            Toast.makeText(getActivity(), "New email required", Toast.LENGTH_SHORT).show();
+                            changeEmail();
+                            return;
+                        }
+                        if (input2.getText().toString().isEmpty()) {
+                            Toast.makeText(getActivity(), "Password required", Toast.LENGTH_SHORT).show();
+                            changeEmail();
+                            return;
+                        }
+                        if (!Patterns.EMAIL_ADDRESS.matcher(input1.getText().toString()).matches()) {
+                            Toast.makeText(getActivity(), "Please enter a valid email", Toast.LENGTH_SHORT).show();
+                            changeEmail();
+                            return;
+                        }
+
+                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                        AuthCredential credential = EmailAuthProvider
+                                .getCredential(user.getEmail(), input2.getText().toString());
+
+                        user.reauthenticate(credential)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            user.updateEmail(input1.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Toast.makeText(getActivity(), "Email updated", Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+                                        } else {
+                                            Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+                                });
+
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
+    protected void changeUsername() {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        View promptView = layoutInflater.inflate(R.layout.dialogbox, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setView(promptView);
+
+        final TextView title = (TextView) promptView.findViewById(R.id.dialogboxTitle);
+        title.setText("Change Username");
+        final EditText input1 = (EditText) promptView.findViewById(R.id.input1);
+        input1.setHint("New Username...");
+        final EditText input2 = (EditText) promptView.findViewById(R.id.input2);
+        input2.setVisibility(View.GONE);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (input1.getText().toString().isEmpty()) {
+                            Toast.makeText(getActivity(), "Name required", Toast.LENGTH_SHORT).show();
+                            changeUsername();
+                            return;
+                        }
+
+                        if (input1.getText().toString().length() < 4 || input1.getText().toString().length() > 16 ) {
+                            Toast.makeText(getActivity(), "Length should be between 4 and 16 characters", Toast.LENGTH_SHORT).show();
+                            changeUsername();
+                            return;
+                        }
+
+                        FirebaseUser user = mAuth.getCurrentUser();
+
+                        if (user != null) {
+                            UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(input1.getText().toString())
+                                    .build();
+
+                            user.updateProfile(profile)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                loadUserInformation();
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 
 }
