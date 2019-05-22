@@ -44,4 +44,6 @@ dependencies {
 // If you're using Kotlin (and therefore, kapt), use kapt instead of annotationProcessor
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 }

@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 public class HomeFragment extends Fragment {
 
     private static final String TAG = "MainActivity";
-
+    public static Activities activity;
     private List<Activities> usersList;
     private FirebaseFirestore mFirestore;
 
@@ -64,6 +64,7 @@ public class HomeFragment extends Fragment {
 
                         Activities users = doc.getDocument().toObject(Activities.class);
                         usersList.add(users);
+
                     }
                 }
                 adapter = new RecyclerAdapter(usersList);
@@ -73,6 +74,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onItemClick(int position) {
                         usersList.get(position);
+                        activity = usersList.get(position);
                         Intent myIntent = new Intent(getActivity(), DetailedLessonActivity.class);
                         startActivity(myIntent);
                         adapter.notifyItemChanged(position);
