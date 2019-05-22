@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,7 +33,7 @@ public class HomeFragment extends Fragment {
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    RecyclerView.Adapter adapter;
+    RecyclerAdapter adapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -67,6 +68,16 @@ public class HomeFragment extends Fragment {
                 }
                 adapter = new RecyclerAdapter(usersList);
                 recyclerView.setAdapter(adapter);
+
+                adapter.setOnItemCLickListener(new RecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        usersList.get(position);
+                        Intent myIntent = new Intent(getActivity(), DetailedLessonActivity.class);
+                        startActivity(myIntent);
+                        adapter.notifyItemChanged(position);
+                    }
+                });
             }
         });
         return v;

@@ -16,12 +16,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public RecyclerAdapter(List<Activities> usersList){
         this.usersList = usersList;
     }
+    private OnItemClickListener mListener;
 
     private int[] images = { R.drawable.logo,
             R.drawable.logo,
             R.drawable.logo,
             R.drawable.logo,};
 
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemCLickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
     class ViewHolder extends RecyclerView.ViewHolder{
         public ImageView itemImage;
         public TextView itemName;
@@ -32,6 +40,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             itemImage = (ImageView)itemView.findViewById(R.id.item_image);
             itemName = (TextView) itemView.findViewById(R.id.item_title);
             itemAge = (TextView) itemView.findViewById(R.id.item_detail);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            mListener.onItemClick(position);
+                        }
+                    }
+
+                }
+            });
         }
     }
 
