@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
@@ -69,8 +72,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         Activities activity;
         activity = usersList.get(i);
         viewHolder.itemName.setText(activity.getName());
-        viewHolder.itemAge.setText(activity.getAge());
-        viewHolder.itemImage.setImageResource(images[i]);
+        viewHolder.itemAge.setText("Age: "+activity.getAge());
+        Picasso.get().load(activity.getImage()).into(viewHolder.itemImage);
+        //viewHolder.itemImage.setImageResource(images[i]);
     }
 
     @Override

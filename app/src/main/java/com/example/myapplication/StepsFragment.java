@@ -124,7 +124,6 @@ public class StepsFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        TextView question13 = finalView.findViewById(R.id.q3);
                         RadioGroup group1  = (RadioGroup) finalView.findViewById(R.id.radioGroup1);
                         RadioGroup group2  = finalView.findViewById(R.id.radioGroup2);
                         RadioGroup group3  = finalView.findViewById(R.id.radioGroup3);
