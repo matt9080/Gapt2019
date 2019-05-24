@@ -18,7 +18,7 @@ public class MainTestActivity extends AppCompatActivity {
 
         BottomNavigationView navigationView = findViewById(R.id.buttom_nav);
 
-        final HomeFragment homeFragment = new HomeFragment();
+        final NewLessonsFragment newlessonsFragment = new NewLessonsFragment();
         final LessonsFragment newhomeFragment = new LessonsFragment();
         final ProfileFragment profileFragment = new ProfileFragment();
 
@@ -30,7 +30,7 @@ public class MainTestActivity extends AppCompatActivity {
                     setFragment(newhomeFragment);
                     return true;
                 }else if(id == R.id.lessons){
-                    setFragment(homeFragment);
+                    setFragment(newlessonsFragment);
                     return true;
                 }else if(id == R.id.profile){
                     setFragment(profileFragment);

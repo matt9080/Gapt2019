@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class NewLessonsFragment extends Fragment {
 
     private static final String TAG = "MainActivity";
     public static Activities activity;
@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
     RecyclerView.LayoutManager layoutManager;
     RecyclerAdapter adapter;
 
-    public HomeFragment() {
+    public NewLessonsFragment() {
         // Required empty public constructor
     }
 
@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
+        View v = inflater.inflate(R.layout.fragment_lesson, container, false);
     mFirestore = FirebaseFirestore.getInstance();
     usersList = new ArrayList<>();
 

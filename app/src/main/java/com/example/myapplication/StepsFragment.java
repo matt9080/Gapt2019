@@ -78,7 +78,7 @@ public class StepsFragment extends Fragment {
                 break;
             case "questions":
                 view = inflater.inflate(R.layout.fragment_questions, container, false);
-                List<String> questions = HomeFragment.activity.getQuestions();
+                List<String> questions = NewLessonsFragment.activity.getQuestions();
 
                 TextView question1 = view.findViewById(R.id.q1);
                 TextView question2 = view.findViewById(R.id.q2);
@@ -150,7 +150,7 @@ public class StepsFragment extends Fragment {
                             FirebaseUser user = mAuth.getCurrentUser();
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             DocumentReference userupdate = db.collection("users").document(user.getUid());
-                            userupdate.update("lessonscompleted", FieldValue.arrayUnion(HomeFragment.activity.getID()));
+                            userupdate.update("lessonscompleted", FieldValue.arrayUnion(NewLessonsFragment.activity.getID()));
                             getActivity().finish();
                             Intent myIntent1 = new Intent(getActivity(), MainTestActivity.class);
                             getActivity().startActivity(myIntent1);

@@ -34,7 +34,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
@@ -268,11 +267,11 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         lessons.setText("");
         //lessons
         //List<String> doneWithoutDuplicates = doneWithDuplicates.to.stream().distinct().collect(Collectors.toList()).toArray();
-        for (int i=0 ;i<HomeFragment.usersList.size();i++){
+        for (int i = 0; i< NewLessonsFragment.usersList.size(); i++){
             for (int j=0 ;j<ldone;j++) {
 
-                if (doneWithDuplicates.stream().distinct().collect(Collectors.toList()).get(j).equals(HomeFragment.usersList.get(i).getID())) {
-                    lessons.setText(lessons.getText() + "\n" + HomeFragment.usersList.get(i).getName());
+                if (doneWithDuplicates.stream().distinct().collect(Collectors.toList()).get(j).equals(NewLessonsFragment.usersList.get(i).getID())) {
+                    lessons.setText(lessons.getText() + "\n" + NewLessonsFragment.usersList.get(i).getName());
                 }
 
             }
