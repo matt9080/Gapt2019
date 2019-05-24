@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class DetailedLessonActivity extends AppCompatActivity {
+public class DetailedLessonActivity extends AppCompatActivity  implements View.OnClickListener {
 
     private ViewPager viewPager;
     private TextView title;
@@ -23,5 +23,23 @@ public class DetailedLessonActivity extends AppCompatActivity {
         title.setText(HomeFragment.activity.getName());
         adapter = new StepsFragmentCollection(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+        findViewById(R.id.button2).setOnClickListener(this);
+        findViewById(R.id.button).setOnClickListener(this);
+        
+
     }
+
+    public void onClick(View view) {
+        switch (view.getId()) {
+
+
+            case R.id.button2:
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+                break;
+            case R.id.button:
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+                break;
+        }
+    }
+
 }

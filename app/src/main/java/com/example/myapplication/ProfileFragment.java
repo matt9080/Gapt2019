@@ -2,12 +2,17 @@ package com.example.myapplication;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -20,13 +25,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.*;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -34,9 +45,11 @@ import com.google.firebase.auth.UserProfileChangeRequest;
  */
 public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemClickListener{
 
+    private static final String TAG = "ProfileFragment";
     FirebaseAuth mAuth;
     TextView username;
     ImageView profilepic;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -53,6 +66,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         username = (TextView) v.findViewById(R.id.profileUsername);
         mAuth = FirebaseAuth.getInstance();
         loadUserInformation();
+        v = loadbadges(v);
 
         Button settings = (Button)v.findViewById(R.id.psettings_btn);
 
@@ -88,6 +102,148 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
             }
 
         }
+
+
+    }
+
+    private int ldone = 0;
+    private List<String> doneWithDuplicates;
+    private View loadbadges(View v) {
+        final FirebaseUser user = mAuth.getCurrentUser();
+
+        final ImageView badge1 = (ImageView) v.findViewById(R.id.badge1);
+        Picasso.get().load(R.drawable.badge1).into(badge1);
+        final ImageView badge2 = (ImageView) v.findViewById(R.id.badge2);
+        Picasso.get().load(R.drawable.badge2).into(badge2);
+        final ImageView badge3 = (ImageView) v.findViewById(R.id.badge3);
+        Picasso.get().load(R.drawable.badge3).into(badge3);
+        final ImageView badge4 = (ImageView) v.findViewById(R.id.badge4);
+        Picasso.get().load(R.drawable.badge4).into(badge4);
+        final TextView lessons = (TextView) v.findViewById(R.id.textView4);
+
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("users").document(user.getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+
+                        doneWithDuplicates = (List<String>) document.getData().get("lessonscompleted");
+                        ldone = doneWithDuplicates.stream().distinct().collect(Collectors.toList()).size();
+
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                    } else {
+                        Log.d(TAG, "No such document");
+
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+        if (user.isEmailVerified()) {
+            badge1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getActivity(), "Verify email to unlock. Verification Email Sent.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+
+            badge1.setColorFilter(filter);
+            badge1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(getActivity(), "Verify email to unlock. Verification Email Sent.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        }
+
+        if (ldone>=1) {
+            badge2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getActivity(), "1 Lesson Complete", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else {
+            badge2.setColorFilter(filter);
+            badge2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(getActivity(), "Complete 1 lesson to unlock", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+
+        }
+        if(ldone>=5){
+            badge3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getActivity(), "5 Lessons Complete", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+
+            badge3.setColorFilter(filter);
+            badge3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(getActivity(), "Complete 5 lesson to unlock", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        }
+
+        badge4.setColorFilter(filter);
+        badge4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getActivity(), "More badges comming soon", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+
+        lessons.setText("");
+        //lessons
+        //List<String> doneWithoutDuplicates = doneWithDuplicates.to.stream().distinct().collect(Collectors.toList()).toArray();
+        for (int i=0 ;i<HomeFragment.usersList.size();i++){
+            for (int j=0 ;j<ldone;j++) {
+
+                if (doneWithDuplicates.stream().distinct().collect(Collectors.toList()).get(j).equals(HomeFragment.usersList.get(i).getID())) {
+                    lessons.setText(lessons.getText() + "\n" + HomeFragment.usersList.get(i).getName());
+                }
+
+            }
+        }
+
+        return v;
     }
 
     public void showPopup(View v) {
@@ -245,6 +401,24 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
                                                         Toast.makeText(getActivity(), "Email updated", Toast.LENGTH_SHORT).show();
+                                                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                                        DocumentReference updateuser = db.collection("users").document(user.getUid());
+
+                                                        // Set the "isCapital" field of the city 'DC'
+                                                        updateuser
+                                                                .update("email", input1.getText().toString())
+                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void aVoid) {
+                                                                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                                    }
+                                                                })
+                                                                .addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                        Log.w(TAG, "Error updating document", e);
+                                                                    }
+                                                                });
                                                     } else {
                                                         Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                                     }
@@ -314,6 +488,25 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                                             if (task.isSuccessful()) {
                                                 loadUserInformation();
                                             }
+                                        }
+                                    });
+
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            DocumentReference updateuser = db.collection("users").document(user.getUid());
+
+                            // Set the "isCapital" field of the city 'DC'
+                            updateuser
+                                    .update("name", input1.getText().toString())
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w(TAG, "Error updating document", e);
                                         }
                                     });
                         }

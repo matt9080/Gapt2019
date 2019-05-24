@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,9 +22,14 @@ import android.content.Intent;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity  implements View.OnClickListener {
 
+    private static final String TAG = "SignUpActivity";
     ProgressBar progressBar;
     EditText editTextUsername, editTextEmail, editTextPassword;
 
@@ -46,7 +54,7 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
 
     private void registerUser() {
         final String username = editTextUsername.getText().toString().trim();
-        String email = editTextEmail.getText().toString().trim();
+        final String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
         if (email.isEmpty()) {
@@ -98,6 +106,27 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
                                 .setDisplayName(username)
                                 .build();
                     user.updateProfile(profile);
+
+                    Map<String, Object> newuser = new HashMap<>();
+                    newuser.put("name", username);
+                    newuser.put("email", email);
+
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("users").document(user.getUid())
+                            .set(newuser)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error writing document", e);
+                                }
+                            });
+
 
                     finish();
                     Intent intent = new Intent(SignUpActivity.this, MainTestActivity.class);

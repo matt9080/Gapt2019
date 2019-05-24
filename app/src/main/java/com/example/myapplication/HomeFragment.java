@@ -28,7 +28,7 @@ public class HomeFragment extends Fragment {
 
     private static final String TAG = "MainActivity";
     public static Activities activity;
-    private List<Activities> usersList;
+    public static List<Activities> usersList;
     private FirebaseFirestore mFirestore;
 
     RecyclerView recyclerView;
