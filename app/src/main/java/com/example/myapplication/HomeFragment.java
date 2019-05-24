@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,6 +39,7 @@ public class HomeFragment extends Fragment {
     public static Activities activity;
     private static List<Activities> usersList1;
     private static List<Activities> usersList2;
+    private static List<Activities> usersList;
     private FirebaseFirestore mFirestore;
     private FirebaseAuth mAuth;
 
@@ -59,6 +61,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         mFirestore = FirebaseFirestore.getInstance();
+        usersList = new ArrayList<>();
         usersList1 = new ArrayList<>();
         usersList2 = new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
@@ -67,8 +70,11 @@ public class HomeFragment extends Fragment {
         TextView welcomeName = (TextView) v.findViewById(R.id.welcome_name);
         ImageView welcomeImage = (ImageView) v.findViewById(R.id.welcome_image);
         welcomeName.setText(user.getDisplayName());
-        Picasso.get().load(user.getPhotoUrl()).into(welcomeImage);
-
+        if(user.getPhotoUrl() != null){
+            Picasso.get().load(user.getPhotoUrl()).into(welcomeImage);
+        }else{
+            Picasso.get().load(R.drawable.profile_default).into(welcomeImage);
+        }
 
         recyclerView1 =  v.findViewById(R.id.horrecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -90,9 +96,11 @@ public class HomeFragment extends Fragment {
 
                         Activities users = doc.getDocument().toObject(Activities.class);
                         if (users.getLevel().equals("1")){
+                            usersList.add(users);
                             usersList1.add(users);
                         }
                         else{
+                            usersList.add(users);
                             usersList2.add(users);
                         }
                     }
@@ -103,16 +111,16 @@ public class HomeFragment extends Fragment {
                 adapter2 = new HorizontalViewAdapter(getActivity(),usersList2, mImageUrls);
                 recyclerView2.setAdapter(adapter2);
 
-                /*adapter.setOnItemCLickListener(new RecyclerAdapter.OnItemClickListener() {
+                adapter.setOnItemCLickListener(new HorizontalViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {
-                        usersList.get(position);
-                        activity = usersList.get(position);
+                        usersList1.get(position);
+                        activity = usersList1.get(position);
                         Intent myIntent = new Intent(getActivity(), DetailedLessonActivity.class);
                         startActivity(myIntent);
                         adapter.notifyItemChanged(position);
                     }
-                });*/
+                });
             }
         });
         return v;

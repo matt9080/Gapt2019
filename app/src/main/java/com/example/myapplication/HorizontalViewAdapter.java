@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
     private Activities activity;
     private List<Activities> mActivityList;
     private Context mContext;
+    private OnItemClickListener mListener;
 
     public HorizontalViewAdapter(Context context, List<Activities> activityList, ArrayList<String> imageUrls) {
         mActivityList = activityList;
@@ -47,17 +49,38 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
                 .load(mActivityList.get(position).getImage())
                 .into(holder.image);
 
+
+
+
         holder.name.setText(mActivityList.get(position).getName());
 
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked on an image: " + mActivityList.get(position).getName());
+
+                //adapter.setOnItemCLickListener(new HorizontalViewAdapter.OnItemClickListener() {
+                   // @Override
+                    //public void onItemClick(int position) {mActivityList.get(position);
+               activity = mActivityList.get(position);
+               Intent myIntent = new Intent(mContext, DetailedLessonActivity.class);
+              mContext.startActivity(myIntent);
+                notifyItemChanged(position);
+                    //}
+               // });
+
+
                 Toast.makeText(mContext, mActivityList.get(position).getName(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
 
+    public void setOnItemCLickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
     @Override
     public int getItemCount() {
         return mActivityList.size();
