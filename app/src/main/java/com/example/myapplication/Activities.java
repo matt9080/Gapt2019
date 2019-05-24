@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Activities {
-    private String age, id, name, shortDescription, image;
+    private String age, id, name, shortDescription, image, level;
     private List<String> steps_type, steps_text, steps_image, questions;
 
 
@@ -18,8 +18,9 @@ public class Activities {
 
 
 
-    public Activities(List<String> steps_type, List<String> steps_text, List<String> steps_image, List<String> questions, String age, String image, String id, String name, String shortDescription){
+    public Activities(List<String> steps_type, List<String> steps_text, List<String> steps_image, List<String> questions, String age, String level, String image, String id, String name, String shortDescription){
 
+        this.level = level;
         this.image = image;
         this.age = age;
         this.id = id;
@@ -47,6 +48,10 @@ public class Activities {
     public String getShortDescription() {
 
         return shortDescription;
+    }
+
+    public String getLevel() {
+        return level;
     }
 
     public String getImage() {

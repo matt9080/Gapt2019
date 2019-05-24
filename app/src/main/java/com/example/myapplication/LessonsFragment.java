@@ -10,12 +10,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +38,10 @@ public class LessonsFragment extends Fragment {
 
     //var
     public static Activities activity;
-    private static List<Activities> usersList;
+    private static List<Activities> usersList1;
+    private static List<Activities> usersList2;
     private FirebaseFirestore mFirestore;
+    private FirebaseAuth mAuth;
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -49,7 +57,16 @@ public class LessonsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_newlessons, container, false);
         mFirestore = FirebaseFirestore.getInstance();
-        usersList = new ArrayList<>();
+        usersList1 = new ArrayList<>();
+        usersList2 = new ArrayList<>();
+        mAuth = FirebaseAuth.getInstance();
+        final FirebaseUser user = mAuth.getCurrentUser();
+
+        TextView welcomeName = (TextView) v.findViewById(R.id.welcome_name);
+        ImageView welcomeImage = (ImageView) v.findViewById(R.id.welcome_image);
+        welcomeName.setText(user.getDisplayName());
+        Picasso.get().load(user.getPhotoUrl()).into(welcomeImage);
+
 
         recyclerView = (RecyclerView) v.findViewById(R.id.horrecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -66,10 +83,17 @@ public class LessonsFragment extends Fragment {
                     if (doc.getType() == DocumentChange.Type.ADDED) {
 
                         Activities users = doc.getDocument().toObject(Activities.class);
-                        usersList.add(users);
+                        if (users.getLevel().equals("1")){
+                            usersList1.add(users);
+                        }else{
+                            usersList2.add(users);
+                        }
+
 
                     }
                 }
+
+
                 adapter = new HorizontalViewAdapter(getActivity(),usersList, mImageUrls);
                 recyclerView.setAdapter(adapter);
 
