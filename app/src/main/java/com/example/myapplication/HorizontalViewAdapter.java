@@ -24,7 +24,7 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
 
     private static final String TAG = "HorizontalViewAdapter";
 
-    private Activities activity;
+    public static Activities activity;
     private List<Activities> mActivityList;
     private Context mContext;
     private OnItemClickListener mListener;
@@ -54,25 +54,7 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
 
         holder.name.setText(mActivityList.get(position).getName());
 
-        holder.image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked on an image: " + mActivityList.get(position).getName());
 
-                //adapter.setOnItemCLickListener(new HorizontalViewAdapter.OnItemClickListener() {
-                   // @Override
-                    //public void onItemClick(int position) {mActivityList.get(position);
-               activity = mActivityList.get(position);
-               Intent myIntent = new Intent(mContext, DetailedLessonActivity.class);
-              mContext.startActivity(myIntent);
-                notifyItemChanged(position);
-                    //}
-               // });
-
-
-                Toast.makeText(mContext, mActivityList.get(position).getName(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
     public interface OnItemClickListener{
         void onItemClick(int position);
@@ -95,6 +77,18 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
             super(itemView);
             image = itemView.findViewById(R.id.image);
             name = itemView.findViewById(R.id.name);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

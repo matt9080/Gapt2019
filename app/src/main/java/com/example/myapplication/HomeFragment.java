@@ -121,6 +121,17 @@ public class HomeFragment extends Fragment {
                         adapter.notifyItemChanged(position);
                     }
                 });
+
+                adapter2.setOnItemCLickListener(new HorizontalViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        usersList2.get(position);
+                        activity = usersList2.get(position);
+                        Intent myIntent = new Intent(getActivity(), DetailedLessonActivity.class);
+                        startActivity(myIntent);
+                        adapter2.notifyItemChanged(position);
+                    }
+                });
             }
         });
         return v;

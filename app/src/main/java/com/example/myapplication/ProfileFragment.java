@@ -59,6 +59,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
     private static final String TAG = "ProfileFragment";
     private static final int CHOOSE_IMAGE = 101;
     FirebaseAuth mAuth;
+    FirebaseUser user;
     TextView username;
 
     ImageView profileView;
@@ -67,6 +68,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
     ProgressBar progressBar;
     StorageReference profileImageRef;
     String profileImageUrl;
+    StorageReference usersRef;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -112,8 +114,14 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         //return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
+    public void onStart() {
+        super.onStart();
+        loadUserInformation();
+        loadbadges(getView());
+    }
+
     private void loadUserInformation() {
-        final FirebaseUser user = mAuth.getCurrentUser();
+        user = mAuth.getCurrentUser();
 
         if (user != null) {
 
@@ -138,8 +146,8 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
     private int ldone = 0;
     private List<String> doneWithDuplicates;
     private View loadbadges(View v) {
-        final FirebaseUser user = mAuth.getCurrentUser();
 
+        user = mAuth.getCurrentUser();
         final ImageView badge1 = (ImageView) v.findViewById(R.id.badge1);
         Picasso.get().load(R.drawable.badge1).into(badge1);
         final ImageView badge2 = (ImageView) v.findViewById(R.id.badge2);
@@ -575,7 +583,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(getActivity(), "Profile Picture Updated", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getActivity(), "Profile Picture Updated", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -643,7 +651,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
             Uri file = uriProfileImage;
 
-            StorageReference usersRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + user.getUid() + ".jpg");
+            usersRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + user.getUid() + ".jpg");
 
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
