@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
+    android:background="@drawable/rounded_corner"
     android:clickable="true"
     android:foreground="?selectableItemBackground"
     card_view:cardBackgroundColor="#468FF5"

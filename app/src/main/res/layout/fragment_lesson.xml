@@ -11,7 +11,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout3"
-        android:layout_width="401dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
@@ -20,58 +20,60 @@
         tools:layout_editor_absoluteY="157dp">
 
         <android.support.design.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/coordinatorLayout"
+            android:layout_width="374dp"
+            android:layout_height="560dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:fitsSystemWindows="true"
+            android:foregroundGravity="bottom"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_searchhere2"
             tools:context=".CardDemoActivity">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
         </android.support.design.widget.CoordinatorLayout>
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <SearchView
-            android:id="@+id/searchIcon"
-            android:layout_width="53dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="504dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/txt_searchhere"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.004">
-
-        </SearchView>
-
         <EditText
             android:id="@+id/txt_searchhere2"
-            android:layout_width="274dp"
-            android:layout_height="wrap_content"
+            android:layout_width="271dp"
+            android:layout_height="47dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="505dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/enter_textbox_color"
             android:ems="10"
-            android:hint="Search Here"
+            android:hint="Search Here..."
             android:inputType="textPersonName"
-            android:text="Search Here"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
             app:layout_constraintEnd_toStartOf="@+id/searchIcon"
             app:layout_constraintHorizontal_bias="0.235"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.01" />
+            app:layout_constraintVertical_bias="0.043" />
+
+        <Button
+            android:id="@+id/searchIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:drawable/ic_search_category_default"
+            app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.536"
+            app:layout_constraintStart_toEndOf="@+id/txt_searchhere2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.304" />
 
     </android.support.constraint.ConstraintLayout>
 </RelativeLayout>

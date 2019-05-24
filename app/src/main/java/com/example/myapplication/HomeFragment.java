@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
     public static Activities activity;
     private static List<Activities> usersList1;
     private static List<Activities> usersList2;
-    private static List<Activities> usersList;
+    public static List<Activities> usersList;
     private FirebaseFirestore mFirestore;
     private FirebaseAuth mAuth;
 

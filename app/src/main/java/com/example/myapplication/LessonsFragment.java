@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -28,7 +31,7 @@ public class LessonsFragment extends Fragment {
 
     private static final String TAG = "MainActivity";
     public static Activities activity;
-    public static List<Activities> usersList;
+    public static List<Activities> newusersList;
     private FirebaseFirestore mFirestore;
 
     RecyclerView recyclerView;
@@ -46,42 +49,48 @@ public class LessonsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_lesson, container, false);
     mFirestore = FirebaseFirestore.getInstance();
-    usersList = new ArrayList<>();
 
     recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
     layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        mFirestore.collection("activities").addSnapshotListener(new EventListener<QuerySnapshot>() {
-        @Override
-        public void onEvent(@Nullable QuerySnapshot documentSnapshots, @Nullable FirebaseFirestoreException e) {
+        adapter = new RecyclerAdapter(HomeFragment.usersList);
+        recyclerView.setAdapter(adapter);
 
-            if (e != null) {
-                Log.d(TAG, "Error:" + e.getMessage());
+        adapter.setOnItemCLickListener(new RecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                HomeFragment.usersList.get(position);
+                activity = HomeFragment.usersList.get(position);
+                Intent myIntent = new Intent(getActivity(), DetailedLessonActivity.class);
+                startActivity(myIntent);
+                adapter.notifyItemChanged(position);
             }
-            for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
-                if (doc.getType() == DocumentChange.Type.ADDED) {
+        });
 
-                    Activities users = doc.getDocument().toObject(Activities.class);
-                    usersList.add(users);
+        Button searchIcon = (Button)v.findViewById(R.id.searchIcon);
+        final EditText searchText = (EditText)v.findViewById(R.id.txt_searchhere2);
 
+        searchIcon.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                newusersList = new ArrayList<>();
+                for (int i = 0; i < HomeFragment.usersList.size(); i++){
+                    if (HomeFragment.usersList.get(i).getName().toLowerCase().contains(searchText.getText().toString().toLowerCase())){
+                        newusersList.add(HomeFragment.usersList.get(i));
+                    }
                 }
+                if(newusersList.size()>0){
+                    adapter = new RecyclerAdapter(newusersList);
+                    recyclerView.setAdapter(adapter);
+                }else{
+                    Toast.makeText(getActivity(), "No results found", Toast.LENGTH_SHORT).show();
+                }
+
             }
-            adapter = new RecyclerAdapter(usersList);
-            recyclerView.setAdapter(adapter);
+        });
 
-            adapter.setOnItemCLickListener(new RecyclerAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    usersList.get(position);
-                    activity = usersList.get(position);
-                    Intent myIntent = new Intent(getActivity(), DetailedLessonActivity.class);
-                    startActivity(myIntent);
-                    adapter.notifyItemChanged(position);
-                }
-            });
-        }
-    });
         return v;
 }
 
