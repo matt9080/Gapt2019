@@ -18,16 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Registry;
-import com.bumptech.glide.annotation.GlideModule;
-import com.bumptech.glide.module.AppGlideModule;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.*;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -143,22 +134,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 editName.setText(user.getDisplayName());
             }
 
-            /*if (user.isEmailVerified()) {
-                textView.setText("Email Verified");
-            } else {
-                textView.setText("Email Not Verified (Click to Verify)");
-                textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(EditProfileActivity.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
-            }*/
         }
     }
 
@@ -219,7 +194,7 @@ public class EditProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -238,7 +213,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
         }
-    }
+    }*/
 
     private void uploadImageToFirebaseStorage() {
         profileImageRef =

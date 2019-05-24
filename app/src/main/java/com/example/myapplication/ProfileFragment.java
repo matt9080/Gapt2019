@@ -2,16 +2,16 @@ package com.example.myapplication;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,11 +34,22 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -46,9 +58,16 @@ import java.util.stream.Collectors;
 public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemClickListener{
 
     private static final String TAG = "ProfileFragment";
+    private static final int CHOOSE_IMAGE = 101;
     FirebaseAuth mAuth;
     TextView username;
-    ImageView profilepic;
+
+    ImageView profileView;
+
+    Uri uriProfileImage;
+    ProgressBar progressBar;
+    StorageReference profileImageRef;
+    String profileImageUrl;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -62,7 +81,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
 
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
-        profilepic = (ImageView) v.findViewById(R.id.profilepic);
+        profileView = (ImageView) v.findViewById(R.id.profilepic);
         username = (TextView) v.findViewById(R.id.profileUsername);
         mAuth = FirebaseAuth.getInstance();
         loadUserInformation();
@@ -79,6 +98,15 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
             }
         });
 
+        progressBar = (ProgressBar) v.findViewById(R.id.profileProgressBar);
+
+        profileView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showImageChooser();
+            }
+        });
+
         return v;
 
         // Inflate the layout for this fragment
@@ -89,12 +117,14 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         final FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
+
             if (user.getPhotoUrl() != null) {
+
                 Glide.with(this)
                         .load(user.getPhotoUrl().toString())
-                        .into(profilepic);
+                        .into(profileView);
             }else{
-                //profilepic.setImageResource(R.drawable.profile_default);
+                profileView.setImageResource(R.drawable.profile_default);
             }
 
             if (user.getDisplayName() != null) {
@@ -134,8 +164,13 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
 
-                        doneWithDuplicates = (List<String>) document.getData().get("lessonscompleted");
-                        ldone = doneWithDuplicates.stream().distinct().collect(Collectors.toList()).size();
+
+                        try {
+                            doneWithDuplicates = (List<String>) document.getData().get("lessonscompleted");
+                            ldone = doneWithDuplicates.stream().distinct().collect(Collectors.toList()).size();
+                        }catch(Exception x){
+                            ldone=0;
+                        }
 
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                     } else {
@@ -522,6 +557,186 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         // create an alert dialog
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
+    }
+
+
+
+
+    private void saveUserInformation() {
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (profileImageUrl != null) {
+            UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
+                    .setPhotoUri(Uri.parse(profileImageUrl))
+                    .build();
+
+            user.updateProfile(profile)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getActivity(), "Profile Picture Updated", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            uriProfileImage = data.getData();
+
+            try {
+
+                profileView.setImageBitmap(decodeUri(uriProfileImage));
+
+                uploadImageToFirebaseStorage();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+
+    public  Bitmap decodeUri(Uri uri) throws IOException {
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+        Bitmap newbitmap;
+
+        if (bitmap.getWidth() >= bitmap.getHeight()){
+
+            newbitmap = Bitmap.createBitmap(
+                    bitmap,
+                    bitmap.getWidth()/2 - bitmap.getHeight()/2,
+                    0,
+                    bitmap.getHeight(),
+                    bitmap.getHeight()
+            );
+
+        }else{
+
+            newbitmap = Bitmap.createBitmap(
+                    bitmap,
+                    0,
+                    bitmap.getHeight()/2 - bitmap.getWidth()/2,
+                    bitmap.getWidth(),
+                    bitmap.getWidth()
+            );
+        }
+        return newbitmap;
+    }
+
+    private void uploadImageToFirebaseStorage() throws IOException {
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        final FirebaseUser user = mAuth.getCurrentUser();
+        profileImageRef =
+                FirebaseStorage.getInstance().getReference("profilepics/" + user.getUid() + ".jpg");
+
+        if (uriProfileImage != null) {
+            //progressBar.setVisibility(View.VISIBLE);
+
+            Uri file = uriProfileImage;
+
+            StorageReference usersRef = FirebaseStorage.getInstance().getReference().child("profilepics/" + user.getUid() + ".jpg");
+
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            decodeUri(uriProfileImage).compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+            UploadTask uploadTask = usersRef.putBytes(data);
+
+// Register observers to listen for when the download is done or if it fails
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
+                    FirebaseStorage.getInstance().getReference().child("profilepics/" + user.getUid() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            // Update one field, creating the document if it does not already exist.
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("image", uri.toString());
+                            profileImageUrl = uri.toString();
+
+                            db.collection("users").document(user.getUid())
+                                    .set(data, SetOptions.merge());
+
+                            saveUserInformation();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle any errors
+                        }
+                    });
+                }
+            });
+
+
+/*
+
+            profileImageRef.putFile(uriProfileImage)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            //progressBar.setVisibility(View.GONE);
+
+                            profileImageRef =
+                                    FirebaseStorage.getInstance().getReference("profilepics/" + user.getUid() + ".jpg");
+                            profileImageUrl = profileImageRef.getDownloadUrl().toString();
+
+
+                            FirebaseStorage.getInstance().getReference().child("profilepics/" + user.getUid() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                    // Update one field, creating the document if it does not already exist.
+                                    Map<String, Object> data = new HashMap<>();
+                                    data.put("image", profileImageUrl);
+
+                                    db.collection("users").document(user.getUid())
+                                            .set(data, SetOptions.merge());
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle any errors
+                                }
+                            });
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            //progressBar.setVisibility(View.GONE);
+
+                        }
+                    });*/
+        }
+
+    }
+
+    private void showImageChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), CHOOSE_IMAGE);
     }
 
 }
