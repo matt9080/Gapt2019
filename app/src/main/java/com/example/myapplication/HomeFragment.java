@@ -41,9 +41,13 @@ public class HomeFragment extends Fragment {
     private FirebaseFirestore mFirestore;
     private FirebaseAuth mAuth;
 
-    RecyclerView recyclerView;
+    RecyclerView recyclerView1;
+    RecyclerView recyclerView2;
     RecyclerView.LayoutManager layoutManager;
+    RecyclerView.LayoutManager layoutManager2;
     HorizontalViewAdapter adapter;
+    HorizontalViewAdapter adapter2;
+
     private ArrayList<String> mImageUrls = new ArrayList<>();
     public HomeFragment() {
         // Required empty public constructor
@@ -66,9 +70,13 @@ public class HomeFragment extends Fragment {
         Picasso.get().load(user.getPhotoUrl()).into(welcomeImage);
 
 
-        recyclerView = (RecyclerView) v.findViewById(R.id.horrecyclerView);
+        recyclerView1 =  v.findViewById(R.id.horrecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView1.setLayoutManager(layoutManager);
+
+        recyclerView2 =  v.findViewById(R.id.horrecyclerView2);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true);
+        recyclerView2.setLayoutManager(layoutManager2);
 
         mFirestore.collection("activities").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -83,17 +91,17 @@ public class HomeFragment extends Fragment {
                         Activities users = doc.getDocument().toObject(Activities.class);
                         if (users.getLevel().equals("1")){
                             usersList1.add(users);
-                        }else{
+                        }
+                        else{
                             usersList2.add(users);
                         }
-
-
                     }
                 }
 
-
                 adapter = new HorizontalViewAdapter(getActivity(),usersList1, mImageUrls);
-                recyclerView.setAdapter(adapter);
+                recyclerView1.setAdapter(adapter);
+                adapter2 = new HorizontalViewAdapter(getActivity(),usersList2, mImageUrls);
+                recyclerView2.setAdapter(adapter2);
 
                 /*adapter.setOnItemCLickListener(new RecyclerAdapter.OnItemClickListener() {
                     @Override

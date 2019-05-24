@@ -23,8 +23,8 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
 
     private static final String TAG = "HorizontalViewAdapter";
 
-    public static Activities activity;
-    public static List<Activities> mActivityList;
+    private Activities activity;
+    private List<Activities> mActivityList;
     private Context mContext;
 
     public HorizontalViewAdapter(Context context, List<Activities> activityList, ArrayList<String> imageUrls) {
