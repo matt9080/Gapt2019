@@ -267,11 +267,11 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         lessons.setText("");
         //lessons
         //List<String> doneWithoutDuplicates = doneWithDuplicates.to.stream().distinct().collect(Collectors.toList()).toArray();
-        for (int i = 0; i< NewLessonsFragment.usersList.size(); i++){
+        for (int i = 0; i< LessonsFragment.usersList.size(); i++){
             for (int j=0 ;j<ldone;j++) {
 
-                if (doneWithDuplicates.stream().distinct().collect(Collectors.toList()).get(j).equals(NewLessonsFragment.usersList.get(i).getID())) {
-                    lessons.setText(lessons.getText() + "\n" + NewLessonsFragment.usersList.get(i).getName());
+                if (doneWithDuplicates.stream().distinct().collect(Collectors.toList()).get(j).equals(LessonsFragment.usersList.get(i).getID())) {
+                    lessons.setText(lessons.getText() + "\n" + LessonsFragment.usersList.get(i).getName());
                 }
 
             }

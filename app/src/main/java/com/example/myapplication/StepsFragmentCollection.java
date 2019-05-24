@@ -22,9 +22,9 @@ public class StepsFragmentCollection extends FragmentStatePagerAdapter {
 
         StepsFragment stepsFragment = new StepsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("steps_type", NewLessonsFragment.activity.getSteps_type().get(i));
-        bundle.putString("steps_text", NewLessonsFragment.activity.getSteps_text().get(i));
-        bundle.putString("steps_image", NewLessonsFragment.activity.getSteps_image().get(i));
+        bundle.putString("steps_type", LessonsFragment.activity.getSteps_type().get(i));
+        bundle.putString("steps_text", LessonsFragment.activity.getSteps_text().get(i));
+        bundle.putString("steps_image", LessonsFragment.activity.getSteps_image().get(i));
 
         i++;
         stepsFragment.setArguments(bundle);
@@ -34,6 +34,6 @@ public class StepsFragmentCollection extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return NewLessonsFragment.activity.getSteps_type().size();
+        return LessonsFragment.activity.getSteps_type().size();
     }
 }

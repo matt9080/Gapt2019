@@ -18,8 +18,8 @@ public class MainTestActivity extends AppCompatActivity {
 
         BottomNavigationView navigationView = findViewById(R.id.buttom_nav);
 
-        final NewLessonsFragment newlessonsFragment = new NewLessonsFragment();
-        final LessonsFragment newhomeFragment = new LessonsFragment();
+        final LessonsFragment lessonsFragment = new LessonsFragment();
+        final HomeFragment homeFragment = new HomeFragment();
         final ProfileFragment profileFragment = new ProfileFragment();
 
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -27,10 +27,10 @@ public class MainTestActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 if(id == R.id.home){
-                    setFragment(newhomeFragment);
+                    setFragment(homeFragment);
                     return true;
                 }else if(id == R.id.lessons){
-                    setFragment(newlessonsFragment);
+                    setFragment(lessonsFragment);
                     return true;
                 }else if(id == R.id.profile){
                     setFragment(profileFragment);
