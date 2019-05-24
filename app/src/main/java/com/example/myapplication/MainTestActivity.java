@@ -7,16 +7,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ScrollView;
-
-
 
 public class MainTestActivity extends AppCompatActivity {
     private static final String TAG = "ViewDatabase";
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +19,7 @@ public class MainTestActivity extends AppCompatActivity {
         BottomNavigationView navigationView = findViewById(R.id.buttom_nav);
 
         final HomeFragment homeFragment = new HomeFragment();
-        final LessonsFragment lessonsFragment = new LessonsFragment();
+        final LessonsFragment newhomeFragment = new LessonsFragment();
         final ProfileFragment profileFragment = new ProfileFragment();
 
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -34,10 +27,10 @@ public class MainTestActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 if(id == R.id.home){
-                    setFragment(homeFragment);
+                    setFragment(newhomeFragment);
                     return true;
                 }else if(id == R.id.lessons){
-                    setFragment(lessonsFragment);
+                    setFragment(homeFragment);
                     return true;
                 }else if(id == R.id.profile){
                     setFragment(profileFragment);
@@ -48,7 +41,6 @@ public class MainTestActivity extends AppCompatActivity {
         });
 
         navigationView.setSelectedItemId(R.id.home);
-
     }
 
     private void setFragment(Fragment fragment){

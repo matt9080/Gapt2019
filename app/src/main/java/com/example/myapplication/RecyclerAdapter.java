@@ -53,7 +53,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                             mListener.onItemClick(position);
                         }
                     }
-
                 }
             });
         }
