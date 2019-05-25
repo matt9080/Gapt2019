@@ -86,7 +86,6 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         username = (TextView) v.findViewById(R.id.profileUsername);
         mAuth = FirebaseAuth.getInstance();
         loadUserInformation();
-        v = loadbadges(v);
 
         Button settings = (Button)v.findViewById(R.id.psettings_btn);
 
@@ -95,7 +94,6 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
             @Override
             public void onClick(View v) {
                 showPopup(v);
-                /**/
             }
         });
 
@@ -114,11 +112,6 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         //return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
-    public void onStart() {
-        super.onStart();
-        loadUserInformation();
-        loadbadges(getView());
-    }
 
     private void loadUserInformation() {
         user = mAuth.getCurrentUser();
@@ -139,29 +132,6 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
             }
 
         }
-
-
-    }
-
-    private int ldone = 0;
-    private List<String> doneWithDuplicates;
-    private View loadbadges(View v) {
-
-        user = mAuth.getCurrentUser();
-        final ImageView badge1 = (ImageView) v.findViewById(R.id.badge1);
-        Picasso.get().load(R.drawable.badge1).into(badge1);
-        final ImageView badge2 = (ImageView) v.findViewById(R.id.badge2);
-        Picasso.get().load(R.drawable.badge2).into(badge2);
-        final ImageView badge3 = (ImageView) v.findViewById(R.id.badge3);
-        Picasso.get().load(R.drawable.badge3).into(badge3);
-        final ImageView badge4 = (ImageView) v.findViewById(R.id.badge4);
-        Picasso.get().load(R.drawable.badge4).into(badge4);
-        final TextView lessons = (TextView) v.findViewById(R.id.textView4);
-
-        ColorMatrix matrix = new ColorMatrix();
-        matrix.setSaturation(0);
-        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("users").document(user.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -187,8 +157,33 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
                 }
+                loadbadges(getView());
             }
         });
+
+
+    }
+
+    private int ldone = 0;
+    private List<String> doneWithDuplicates;
+    private View loadbadges(View v) {
+
+        user = mAuth.getCurrentUser();
+        final ImageView badge1 = (ImageView) v.findViewById(R.id.badge1);
+        Picasso.get().load(R.drawable.badge1).into(badge1);
+        final ImageView badge2 = (ImageView) v.findViewById(R.id.badge2);
+        Picasso.get().load(R.drawable.badge2).into(badge2);
+        final ImageView badge3 = (ImageView) v.findViewById(R.id.badge3);
+        Picasso.get().load(R.drawable.badge3).into(badge3);
+        final ImageView badge4 = (ImageView) v.findViewById(R.id.badge4);
+        Picasso.get().load(R.drawable.badge4).into(badge4);
+        final TextView lessons = (TextView) v.findViewById(R.id.textView4);
+
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+
+
 
         if (user.isEmailVerified()) {
             badge1.setOnClickListener(new View.OnClickListener() {

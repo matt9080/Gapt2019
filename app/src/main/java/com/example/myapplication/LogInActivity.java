@@ -6,18 +6,27 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import android.support.annotation.NonNull;
 import android.util.Patterns;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -103,45 +112,53 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void forgotPass() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Forgot Password?");
+    protected void forgotPass() {
 
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT );
-        builder.setView(input);
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View promptView = layoutInflater.inflate(R.layout.dialogbox, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptView);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (input.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Email required", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+        final TextView title = (TextView) promptView.findViewById(R.id.dialogboxTitle);
+        title.setText("Forgot Password?");
+        final EditText input1 = (EditText) promptView.findViewById(R.id.input1);
+        input1.setHint("Email...");
+        final EditText input2 = (EditText) promptView.findViewById(R.id.input2);
+        input2.setVisibility(View.GONE);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (input1.getText().toString().isEmpty()) {
+                            Toast.makeText(getApplicationContext(), "Email required", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
-                FirebaseAuth auth = FirebaseAuth.getInstance();
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
 
-                auth.sendPasswordResetEmail(input.getText().toString())
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "Reset Password Email Sent", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
+                        auth.sendPasswordResetEmail(input1.getText().toString())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(getApplicationContext(), "Reset Password Email Sent", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
                             }
                         });
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
 
-        builder.show();
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 
 

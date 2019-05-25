@@ -28,7 +28,7 @@
         app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view"
-        app:layout_constraintVertical_bias="0.81" />
+        app:layout_constraintVertical_bias="0.756" />
 
     <EditText
         android:id="@+id/pass_textbox"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
         android:layout_marginEnd="35dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/enter_textbox"
         android:ems="10"
         android:hint="Password..."
@@ -48,7 +48,7 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/forgotPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.518"
+        app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent" />
 
     <View
@@ -104,10 +104,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="56dp"
         android:background="@null"
         android:inputType="none"
         android:text="Forgot Password?"

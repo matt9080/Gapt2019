@@ -345,7 +345,8 @@
                                 android:paddingStart="20dp"
                                 android:paddingRight="20dp"
                                 android:text="TextView"
-                                android:textColor="#FFFFFF" />
+                                android:textColor="#FFFFFF"
+                                android:textSize="16sp" />
                         </LinearLayout>
                     </ScrollView>
 
