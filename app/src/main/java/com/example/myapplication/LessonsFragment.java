@@ -17,8 +17,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -47,14 +45,14 @@ public class LessonsFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new RecyclerAdapter(HomeFragment.m_usersList);
+        adapter = new RecyclerAdapter(HomeFragment.m_activitiesList);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemCLickListener(new RecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                HomeFragment.m_usersList.get(position);
-                HomeFragment.activity = HomeFragment.m_usersList.get(position);
+                HomeFragment.m_activitiesList.get(position);
+                HomeFragment.activity = HomeFragment.m_activitiesList.get(position);
                 Intent myIntent = new Intent(getActivity(), DetailedLessonActivity.class);
                 startActivity(myIntent);
                 adapter.notifyItemChanged(position);
@@ -69,9 +67,9 @@ public class LessonsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 newusersList = new ArrayList<>();
-                for (int i = 0; i < HomeFragment.m_usersList.size(); i++){
-                    if (HomeFragment.m_usersList.get(i).getName().toLowerCase().contains(searchText.getText().toString().toLowerCase())){
-                        newusersList.add(HomeFragment.m_usersList.get(i));
+                for (int i = 0; i < HomeFragment.m_activitiesList.size(); i++){
+                    if (HomeFragment.m_activitiesList.get(i).getName().toLowerCase().contains(searchText.getText().toString().toLowerCase())){
+                        newusersList.add(HomeFragment.m_activitiesList.get(i));
                     }
                 }
                 if(newusersList.size()>0){
