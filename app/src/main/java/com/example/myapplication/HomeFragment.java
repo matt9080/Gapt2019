@@ -1,30 +1,30 @@
 package com.example.myapplication;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+        import android.content.Intent;
+        import android.os.Bundle;
+        import android.support.v4.app.Fragment;
+        import android.support.v7.widget.LinearLayoutManager;
+        import android.support.v7.widget.RecyclerView;
+        import android.util.Log;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.ImageView;
+        import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.squareup.picasso.Picasso;
+        import com.google.firebase.auth.FirebaseAuth;
+        import com.google.firebase.auth.FirebaseUser;
+        import com.google.firebase.firestore.DocumentChange;
+        import com.google.firebase.firestore.EventListener;
+        import com.google.firebase.firestore.FirebaseFirestore;
+        import com.google.firebase.firestore.FirebaseFirestoreException;
+        import com.google.firebase.firestore.QuerySnapshot;
+        import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
+        import java.util.ArrayList;
+        import java.util.List;
 
-import javax.annotation.Nullable;
+        import javax.annotation.Nullable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
 
         TextView welcomeName = (TextView) v.findViewById(R.id.welcome_name);
         ImageView welcomeImage = (ImageView) v.findViewById(R.id.welcome_image);
-        welcomeName.setText(user.getDisplayName());
+        welcomeName.setText("Welcome Back, " + user.getDisplayName());
         if(user.getPhotoUrl() != null){
             Picasso.get().load(user.getPhotoUrl()).into(welcomeImage);
         }else{
