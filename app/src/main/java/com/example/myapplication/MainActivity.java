@@ -53,14 +53,8 @@ public class MainActivity extends AppCompatActivity implements
         if (mAuth.getCurrentUser() != null) {
             finish();
 
-            final FirebaseUser user = mAuth.getCurrentUser();
+            startActivity(new Intent(this, MainFunctionsActivity.class));
 
-
-                if (user.getDisplayName() == null || user.getDisplayName().equals("")) {
-                    startActivity(new Intent(this, EditProfileActivity.class));
-                } else {
-                    startActivity(new Intent(this, MainFunctionsActivity.class));
-                }
         }
     }
 

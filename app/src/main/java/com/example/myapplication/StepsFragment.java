@@ -163,14 +163,4 @@ public class StepsFragment extends Fragment {
         // Inflate the layout for this fragment
         return view;
     }
-
-    public static Drawable LoadImageFromWebOperations(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            return d;
-        } catch (Exception e) {
-            return null;
-        }
-    }
 }
