@@ -12,6 +12,7 @@ public class Activities {
 
     public Activities(List<String> steps_type, List<String> steps_text, List<String> steps_image, List<String> questions, String age, String level, String image, String id, String name, String shortDescription){
 
+        //initialization
         this.level = level;
         this.image = image;
         this.age = age;
@@ -25,7 +26,6 @@ public class Activities {
     }
 
     public String getName() {
-
         return name;
     }
 

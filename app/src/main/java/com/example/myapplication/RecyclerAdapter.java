@@ -9,15 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     @NonNull
-    public List<Activities> usersList;
-    public RecyclerAdapter(List<Activities> usersList){
-        this.usersList = usersList;
+    public List<Activities> activitiesList;
+    public RecyclerAdapter(List<Activities> activitiesList){
+        this.activitiesList = activitiesList;
     }
     private OnItemClickListener mListener;
 
@@ -32,12 +31,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public ImageView itemImage;
         public TextView itemName;
         public TextView itemAge;
+        public TextView itemshortDesc;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemImage = (ImageView)itemView.findViewById(R.id.item_image);
             itemName = (TextView) itemView.findViewById(R.id.item_title);
-            itemAge = (TextView) itemView.findViewById(R.id.item_detail);
+            itemAge = (TextView) itemView.findViewById(R.id.item_age);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -64,7 +65,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Activities activity;
-        activity = usersList.get(i);
+        activity = activitiesList.get(i);
         viewHolder.itemName.setText(activity.getName());
         viewHolder.itemAge.setText("Age: "+activity.getAge());
         Picasso.get().load(activity.getImage()).into(viewHolder.itemImage);
@@ -72,6 +73,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return usersList.size();
+        return activitiesList.size();
     }
 }

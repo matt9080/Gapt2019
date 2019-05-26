@@ -19,7 +19,7 @@ public class DetailedLessonActivity extends AppCompatActivity  implements View.O
         setContentView(R.layout.fulllesson_view);
         viewPager = findViewById(R.id.viewpager);
         title = findViewById(R.id.txt_lesson_title);
-        title.setText(HomeFragment.activity.getName());
+        title.setText(HomeFragment.curr_activity.getName());
         adapter = new StepsFragmentCollection(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         findViewById(R.id.btn_arrow_left).setOnClickListener(this);

@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,13 +19,11 @@ import java.util.List;
 
 public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAdapter.ViewHolder> {
 
-    private static final String TAG = "HorizontalViewAdapter";
-
     private List<Activities> mActivityList;
     private Context mContext;
     private OnItemClickListener mListener;
 
-    public HorizontalViewAdapter(Context context, List<Activities> activityList, ArrayList<String> imageUrls) {
+    public HorizontalViewAdapter(Context context, List<Activities> activityList) {
         mActivityList = activityList;
         mContext = context;
     }
@@ -34,13 +31,12 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.horlayout_listitem, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view);    //getting horizontal layout
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        Log.d(TAG, "onBindViewHolder: called.");
-
+        //load data from firestore to viewholder
         Glide.with(mContext)
                 .asBitmap()
                 .load(mActivityList.get(position).getImage())

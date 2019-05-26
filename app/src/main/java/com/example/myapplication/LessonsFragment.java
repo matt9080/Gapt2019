@@ -22,9 +22,7 @@ import java.util.List;
  */
 public class LessonsFragment extends Fragment {
 
-    private static final String TAG = "MainActivity";
-    public static List<Activities> newusersList;
-    private FirebaseFirestore mFirestore;
+
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -39,8 +37,8 @@ public class LessonsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_lesson, container, false);
-        mFirestore = FirebaseFirestore.getInstance();
 
+        //Initialize and set lessons recycler view
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -52,7 +50,7 @@ public class LessonsFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 HomeFragment.m_activitiesList.get(position);
-                HomeFragment.activity = HomeFragment.m_activitiesList.get(position);
+                HomeFragment.curr_activity = HomeFragment.m_activitiesList.get(position);
                 Intent myIntent = new Intent(getActivity(), DetailedLessonActivity.class);
                 startActivity(myIntent);
                 adapter.notifyItemChanged(position);
@@ -66,14 +64,17 @@ public class LessonsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                newusersList = new ArrayList<>();
+                List<Activities> search_activityList;
+                search_activityList = new ArrayList<>();
+
+                //iterate through main activities list, a get searched items
                 for (int i = 0; i < HomeFragment.m_activitiesList.size(); i++){
                     if (HomeFragment.m_activitiesList.get(i).getName().toLowerCase().contains(searchText.getText().toString().toLowerCase())){
-                        newusersList.add(HomeFragment.m_activitiesList.get(i));
+                        search_activityList.add(HomeFragment.m_activitiesList.get(i));
                     }
                 }
-                if(newusersList.size()>0){
-                    adapter = new RecyclerAdapter(newusersList);
+                if(search_activityList.size()>0){   //create a recyclerview with results
+                    adapter = new RecyclerAdapter(search_activityList);
                     recyclerView.setAdapter(adapter);
                 }else{
                     Toast.makeText(getActivity(), "No results found", Toast.LENGTH_SHORT).show();

@@ -33,19 +33,16 @@ public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
 
-    public static Activities activity;
-    private static List<Activities> activitiesListL1;
-    private static List<Activities> activitiesListL2;
-    public static List<Activities> m_activitiesList;
+    public static Activities curr_activity;
+    private static List<Activities> activitiesListL1;  //list to hold level 1 activities
+    private static List<Activities> activitiesListL2;  //list to hold level 2 activities
+    public static List<Activities> m_activitiesList;   //list to hold all activities
     private FirebaseFirestore mFirestore;
     private FirebaseAuth mAuth;
 
-    RecyclerView recyclerView1;
-    RecyclerView recyclerView2;
-    RecyclerView.LayoutManager layoutManager;
-    RecyclerView.LayoutManager layoutManager2;
-    HorizontalViewAdapter adapter;
-    HorizontalViewAdapter adapter2;
+    RecyclerView recyclerViewL1, recyclerViewL2;
+    HorizontalViewAdapter adapter;  //adapter to handle recyclerview for Level 1
+    HorizontalViewAdapter adapter2; //adapter to handle recyclerview for Level 2
 
     private ArrayList<String> mImageUrls = new ArrayList<>();
     public HomeFragment() {
@@ -58,8 +55,9 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
+        //initialization
         mFirestore = FirebaseFirestore.getInstance();
-        m_activitiesList = new ArrayList<>();    //
+        m_activitiesList = new ArrayList<>();
         activitiesListL1 = new ArrayList<>();
         activitiesListL2 = new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
@@ -71,16 +69,16 @@ public class HomeFragment extends Fragment {
         if(user.getPhotoUrl() != null){
             Picasso.get().load(user.getPhotoUrl()).into(welcomeImage);
         }else{
-            Picasso.get().load(R.drawable.profile_default).into(welcomeImage);
+            Picasso.get().load(R.drawable.profile_default).into(welcomeImage);  // if there is no photo, default is used
         }
 
-        recyclerView1 =  v.findViewById(R.id.horrecyclerView);
+        recyclerViewL1 =  v.findViewById(R.id.horrecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView1.setLayoutManager(layoutManager);
+        recyclerViewL1.setLayoutManager(layoutManager);
 
-        recyclerView2 =  v.findViewById(R.id.horrecyclerView2);
+        recyclerViewL2 =  v.findViewById(R.id.horrecyclerView2);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true);
-        recyclerView2.setLayoutManager(layoutManager2);
+        recyclerViewL2.setLayoutManager(layoutManager2);
 
         mFirestore.collection("activities").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -93,8 +91,8 @@ public class HomeFragment extends Fragment {
                     if (doc.getType() == DocumentChange.Type.ADDED) {
 
                         Activities users = doc.getDocument().toObject(Activities.class);
-                        if (users.getLevel().equals("1")){
-                            m_activitiesList.add(users);
+                        if (users.getLevel().equals("1")){          //activities are loaded from firestore and put in different
+                            m_activitiesList.add(users);            //lists according to level
                             activitiesListL1.add(users);
                         }
                         else{
@@ -104,16 +102,16 @@ public class HomeFragment extends Fragment {
                     }
                 }
 
-                adapter = new HorizontalViewAdapter(getActivity(), activitiesListL1, mImageUrls);
-                recyclerView1.setAdapter(adapter);
-                adapter2 = new HorizontalViewAdapter(getActivity(), activitiesListL2, mImageUrls);
-                recyclerView2.setAdapter(adapter2);
+                adapter = new HorizontalViewAdapter(getActivity(), activitiesListL1);
+                recyclerViewL1.setAdapter(adapter);
+                adapter2 = new HorizontalViewAdapter(getActivity(), activitiesListL2);
+                recyclerViewL2.setAdapter(adapter2);
 
+                //when clicking on the recyclerview, get the position of the item and open the lesson activity.
                 adapter.setOnItemCLickListener(new HorizontalViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {
-                        activitiesListL1.get(position);
-                        activity = activitiesListL1.get(position);
+                        curr_activity = activitiesListL1.get(position);
                         Intent myIntent = new Intent(getActivity(), DetailedLessonActivity.class);
                         startActivity(myIntent);
                         adapter.notifyItemChanged(position);
@@ -123,8 +121,7 @@ public class HomeFragment extends Fragment {
                 adapter2.setOnItemCLickListener(new HorizontalViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {
-                        activitiesListL2.get(position);
-                        activity = activitiesListL2.get(position);
+                        curr_activity = activitiesListL2.get(position);
                         Intent myIntent = new Intent(getActivity(), DetailedLessonActivity.class);
                         startActivity(myIntent);
                         adapter2.notifyItemChanged(position);
