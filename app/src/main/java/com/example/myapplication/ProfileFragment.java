@@ -105,6 +105,8 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         return v;
     }
 
+
+    //method to load user infoormation from firebase to the ui
     private void loadUserInformation() {
         user = mAuth.getCurrentUser();
 
@@ -124,6 +126,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
             }
 
         }
+        //loads the completed lessons of the authenticated person
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("users").document(user.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -154,6 +157,8 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
     private int ldone = 0;
     private List<String> doneWithDuplicates;
+
+    //method to load the badges
     private View loadbadges(View v) {
 
         user = mAuth.getCurrentUser();
@@ -167,10 +172,12 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         Picasso.get().load(R.drawable.badge4).into(badge4);
         final TextView lessons = (TextView) v.findViewById(R.id.textView4);
 
+        //creating a greyscale color matrix for unearned badges
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
 
+        //badge 1: checking if users verified
         if (user.isEmailVerified()) {
             badge1.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -184,6 +191,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
             badge1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //sending a verification email to the authenticated user
                     user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -194,6 +202,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
             });
         }
 
+        //badge 2: checking if user completed 1 lesson
         if (ldone>=1) {
             badge2.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -216,6 +225,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
             });
 
         }
+        //badge 3: checking if user completed 5 lessons
         if(ldone>=5){
             badge3.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -254,8 +264,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
 
         lessons.setText("");
-        //lessons
-        //List<String> doneWithoutDuplicates = doneWithDuplicates.to.stream().distinct().collect(Collectors.toList()).toArray();
+        //listing all competed lessons
         for (int i = 0; i< HomeFragment.m_activitiesList.size(); i++){
             for (int j=0 ;j<ldone;j++) {
                 if (doneWithDuplicates.stream().distinct().collect(Collectors.toList()).get(j).equals(HomeFragment.m_activitiesList.get(i).getID())) {
@@ -298,6 +307,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         }
     }
 
+    //method to create a custom alert dialog based on dialogbox.xml to handle password changes
     protected void changePassword() {
 
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
@@ -342,6 +352,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+                                            // updating password in firebase authentication
                                             user.updatePassword(input2.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
@@ -373,6 +384,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         alert.show();
     }
 
+    //method to create a custom alert dialog based on dialogbox.xml to handle email changes
     protected void changeEmail() {
 
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
@@ -416,6 +428,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+                                            // updating email in in firebase authentication
                                             user.updateEmail(input1.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
@@ -424,7 +437,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                                                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                                                         DocumentReference updateuser = db.collection("users").document(user.getUid());
 
-                                                        // Set the "isCapital" field of the city 'DC'
+                                                        // updating email in in firestore
                                                         updateuser
                                                                 .update("email", input1.getText().toString())
                                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -465,6 +478,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         alert.show();
     }
 
+    //method to create a custom alert dialog based on dialogbox.xml to handle username changes
     protected void changeUsername() {
 
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
@@ -497,6 +511,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                         FirebaseUser user = mAuth.getCurrentUser();
 
                         if (user != null) {
+                            // updating display name in firebase authentication
                             UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(input1.getText().toString())
                                     .build();
@@ -514,7 +529,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             DocumentReference updateuser = db.collection("users").document(user.getUid());
 
-                            // Set the "isCapital" field of the city 'DC'
+                            // updating display name in firestore
                             updateuser
                                     .update("name", input1.getText().toString())
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -544,6 +559,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         alert.show();
     }
 
+    //method to save users new photo url in firebase authentication
     private void saveUserInformation() {
 
         FirebaseUser user = mAuth.getCurrentUser();
@@ -558,7 +574,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                //Toast.makeText(getActivity(), "Profile Picture Updated", Toast.LENGTH_SHORT).show();
+
                             }
                         }
                     });
@@ -584,6 +600,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         }
     }
 
+    //method to change uri to bitmap (resizes the profile image to a square)
     public  Bitmap decodeUri(Uri uri) throws IOException {
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
         Bitmap newbitmap;
@@ -611,6 +628,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         return newbitmap;
     }
 
+    //method to upload the new profile image to firebase storage
     private void uploadImageToFirebaseStorage() throws IOException {
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
@@ -631,11 +649,10 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
             UploadTask uploadTask = usersRef.putBytes(data);
 
-// Register observers to listen for when the download is done or if it fails
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
+                    //handle unsuccessful uploads
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -646,7 +663,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                         @Override
                         public void onSuccess(Uri uri) {
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            // Update one field, creating the document if it does not already exist.
+                            // Update image uri, creating the document if it does not already exist.
                             Map<String, Object> data = new HashMap<>();
                             data.put("image", uri.toString());
                             profileImageUrl = uri.toString();
@@ -659,7 +676,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            // Handle any errors
+                            //handle any errors
                         }
                     });
                 }
@@ -669,6 +686,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
     }
 
+    //method to allow the user to choose an image from the phone's storage
     private void showImageChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");

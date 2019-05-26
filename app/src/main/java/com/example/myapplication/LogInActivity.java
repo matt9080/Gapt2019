@@ -41,10 +41,12 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.forgotPassword).setOnClickListener(this);
     }
 
+    //method to handle user log in
     private void userLogin() {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
+        //checking all input is valid
         if (email.isEmpty()) {
             editTextEmail.setError("Email is required");
             editTextEmail.requestFocus();
@@ -71,6 +73,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
         progressBar.setVisibility(View.VISIBLE);
 
+        //signing in the user using firebase authentication
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -87,6 +90,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
+
+    //creating click activities for buttons
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -99,8 +104,11 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
+    //method to handle the forget password button
     protected void forgotPass() {
 
+        //creating a new custom dialog box based on dialogbox.xml
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View promptView = layoutInflater.inflate(R.layout.dialogbox, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -112,7 +120,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         input1.setHint("Email...");
         final EditText input2 = (EditText) promptView.findViewById(R.id.input2);
         input2.setVisibility(View.GONE);
-        // setup a dialog window
+
+        //setting up the dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -121,6 +130,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                     return;
                 }
                 FirebaseAuth auth = FirebaseAuth.getInstance();
+                //sending an password reset link to the users email
                 auth.sendPasswordResetEmail(input1.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -137,9 +147,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.cancel();
                 }
-            });
+        });
 
-        // create an alert dialog
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }

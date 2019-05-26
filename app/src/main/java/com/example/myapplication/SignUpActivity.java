@@ -32,7 +32,6 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
     private static final String TAG = "SignUpActivity";
     ProgressBar progressBar;
     EditText editTextUsername, editTextEmail, editTextPassword;
-
     private FirebaseAuth mAuth;
 
     @Override
@@ -51,11 +50,13 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
         btn.setOnClickListener(this);
     }
 
+    //method to handle user sign up
     private void registerUser() {
         final String username = editTextUsername.getText().toString().trim();
         final String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
+        //checking all input is valid
         if (email.isEmpty()) {
             editTextEmail.setError("Email is required");
             editTextEmail.requestFocus();
@@ -94,6 +95,7 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
 
         progressBar.setVisibility(View.VISIBLE);
 
+        //creating a new user in firebase authentication
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -144,6 +146,7 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
 
     }
 
+    //click activity for the signup button
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

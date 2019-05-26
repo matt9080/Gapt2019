@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,15 +20,10 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class StepsFragment extends Fragment {
 
     private TextView textcontent;
@@ -37,7 +31,6 @@ public class StepsFragment extends Fragment {
     private ImageView imageview;
 
     public StepsFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -46,6 +39,7 @@ public class StepsFragment extends Fragment {
         View view = null;
         String steps_text = getArguments().getString("steps_text");
         switch(getArguments().getString("steps_type")) {
+            //populating ui if the next how to stage is of type step
             case "step":
                 view = inflater.inflate(R.layout.fragment_steps, container, false);
                 imageview = view.findViewById(R.id.image_howto);
@@ -64,6 +58,7 @@ public class StepsFragment extends Fragment {
                 textlabel.setText(howto[0]);
                 Picasso.get().load(getArguments().getString("steps_image")).into(imageview);
                 break;
+            //populating ui if the next how to stage is of type fact
             case "fact":
                 view = inflater.inflate(R.layout.fragment_facts, container, false);
                 textlabel = view.findViewById(R.id.text_label);
@@ -73,6 +68,7 @@ public class StepsFragment extends Fragment {
                 textcontent.setText(fact[1]);
 
                 break;
+            //populating ui if the next how to stage is of type questions
             case "questions":
                 view = inflater.inflate(R.layout.fragment_questions, container, false);
                 List<String> questions = HomeFragment.curr_activity.getQuestions();
@@ -115,6 +111,7 @@ public class StepsFragment extends Fragment {
                 rb9.setText(q3[list.get(2)]);
 
                 final View finalView = view;
+                //creating the on click event for the 'complete lesson' button
                 button.setOnClickListener(new View.OnClickListener() {
 
                     @Override
@@ -123,6 +120,7 @@ public class StepsFragment extends Fragment {
                         RadioGroup group1  = (RadioGroup) finalView.findViewById(R.id.radioGroup1);
                         RadioGroup group2  = finalView.findViewById(R.id.radioGroup2);
                         RadioGroup group3  = finalView.findViewById(R.id.radioGroup3);
+                        //checking if all answers are answered
                         if(group1.getCheckedRadioButtonId() == -1 || group2.getCheckedRadioButtonId() == -1 || group3.getCheckedRadioButtonId() == -1){
                             Toast.makeText(getActivity(), "All questions need to be answered", Toast.LENGTH_SHORT).show();
                             return;
@@ -131,6 +129,7 @@ public class StepsFragment extends Fragment {
                         RadioButton answer2  = (RadioButton) finalView.findViewById(group2.getCheckedRadioButtonId());
                         RadioButton answer3  = (RadioButton) finalView.findViewById(group3.getCheckedRadioButtonId());
                         int rightans = 0;
+                        //checking if answers are correct
                         if (answer1.getText().equals(q1[1])){
                             rightans++;
                         }
@@ -140,6 +139,7 @@ public class StepsFragment extends Fragment {
                         if (answer3.getText().equals(q3[1])){
                             rightans++;
                         }
+                        //if all are correct the lesson is added to the users completed lessons
                         if (rightans == 3){
                             Toast.makeText(getActivity(), "Lesson complete", Toast.LENGTH_SHORT).show();
                             FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -157,10 +157,10 @@ public class StepsFragment extends Fragment {
                 });
                 break;
             default:
-                // code block
+
         }
 
-        // Inflate the layout for this fragment
+
         return view;
     }
 }

@@ -12,7 +12,7 @@ public class DetailedLessonActivity extends AppCompatActivity  implements View.O
     private TextView title;
     private StepsFragmentCollection adapter;
 
-    //class to display full lesson details
+    //class to display lesson details, adds the fragments to the view pager
     @Override
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -26,6 +26,7 @@ public class DetailedLessonActivity extends AppCompatActivity  implements View.O
         findViewById(R.id.btn_arrow_right).setOnClickListener(this);
     }
 
+    //click listeners for the page changer buttons
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_arrow_left:

@@ -5,9 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class StepsFragmentCollection extends FragmentStatePagerAdapter {
 
     public StepsFragmentCollection(FragmentManager fm) {
@@ -17,6 +14,7 @@ public class StepsFragmentCollection extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int i) {
 
+        //adding the step content to a bundle to pass to the fragment.
         StepsFragment stepsFragment = new StepsFragment();
         Bundle bundle = new Bundle();
         bundle.putString("steps_type", HomeFragment.curr_activity.getSteps_type().get(i));
@@ -29,6 +27,7 @@ public class StepsFragmentCollection extends FragmentStatePagerAdapter {
         return stepsFragment;
     }
 
+    //getting fragment count (step count)
     @Override
     public int getCount() {
         return HomeFragment.curr_activity.getSteps_type().size();

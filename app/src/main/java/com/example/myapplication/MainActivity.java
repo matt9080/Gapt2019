@@ -21,13 +21,15 @@ public class MainActivity extends AppCompatActivity implements
 
         mAuth = FirebaseAuth.getInstance();
 
+        //initializing buttons and calling the  onClick() method
         Button one = (Button) findViewById(R.id.btn_signup);
-        one.setOnClickListener(this); // calling onClick() method
+        one.setOnClickListener(this);
         Button two = (Button) findViewById(R.id.btn_login);
         two.setOnClickListener(this);
 
     }
 
+    //click listeners for the signup and login buttons
     public void onClick(View v) {
         switch (v.getId()) {
 
@@ -46,29 +48,17 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
 
+        //checking if the user is already logged in, if yes it takes them to the main page
         if (mAuth.getCurrentUser() != null) {
             finish();
-
             startActivity(new Intent(this, MainFunctionsActivity.class));
 
         }
-    }
-
-    protected void onResume() {
-        super.onResume();
-    }
-    protected void onPause() {
-        super.onPause();
-    }
-    protected void onStop() {
-        super.onStop();
-    }
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
 }
