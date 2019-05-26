@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,8 +7,6 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.*;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,9 +23,6 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -53,15 +48,11 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.edit_profile_view);
         mAuth = FirebaseAuth.getInstance();
 
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
         editName = (EditText) findViewById(R.id.editUsername);
         profileView = (ImageView) findViewById(R.id.profileViewImage);
         editpicbtn = (Button) findViewById(R.id.editprofilepicbtn);
         progressBar = (ProgressBar) findViewById(R.id.profileProgressBar);
         cancel = (Button) findViewById(R.id.profilecancel);
-        //textView = (TextView) findViewById(R.id.textViewVerified);
 
         editpicbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,12 +67,10 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveUserInformation();
-
             }
         });
 
     }
-
 
     @Override
     protected void onStart() {
@@ -101,9 +90,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
         if (user != null) {
             if (user.getPhotoUrl() != null) {
-                //Glide.with(this)
-                       // .load(user.getPhotoUrl())
-                        //.into(profileView);
 
                 StorageReference mImageRef =
                         FirebaseStorage.getInstance().getReference(user.getPhotoUrl().getPath());
@@ -137,9 +123,7 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-
     private void saveUserInformation() {
-
 
         String displayName = editName.getText().toString();
 
@@ -189,31 +173,10 @@ public class EditProfileActivity extends AppCompatActivity {
         }
 
         finish();
-        Intent intent = new Intent(EditProfileActivity.this, MainTestActivity.class);
+        Intent intent = new Intent(EditProfileActivity.this, MainFunctionsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
-
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            uriProfileImage = data.getData();
-
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriProfileImage);
-                profileView.setImageBitmap(bitmap);
-
-                uploadImageToFirebaseStorage();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-        }
-    }*/
 
     private void uploadImageToFirebaseStorage() {
         profileImageRef =
@@ -240,37 +203,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.menuLogout:
-
-                FirebaseAuth.getInstance().signOut();
-                finish();
-                startActivity(new Intent(this, MainActivity.class));
-
-                break;
-        }
-
-        return true;
-    }*/
-
     private void showImageChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Image"), CHOOSE_IMAGE);
     }
-
-
 }

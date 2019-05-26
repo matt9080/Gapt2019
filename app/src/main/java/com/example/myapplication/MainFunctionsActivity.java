@@ -8,13 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-public class MainTestActivity extends AppCompatActivity {
+public class MainFunctionsActivity extends AppCompatActivity {
     private static final String TAG = "ViewDatabase";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maintest);
+        setContentView(R.layout.activity_mainfunction);
 
         BottomNavigationView navigationView = findViewById(R.id.buttom_nav);
 

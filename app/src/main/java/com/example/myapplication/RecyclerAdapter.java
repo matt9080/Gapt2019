@@ -21,11 +21,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
     private OnItemClickListener mListener;
 
-    private int[] images = { R.drawable.logo,
-            R.drawable.logo,
-            R.drawable.logo,
-            R.drawable.logo,};
-
     public interface OnItemClickListener{
         void onItemClick(int position);
     }
@@ -73,7 +68,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         viewHolder.itemName.setText(activity.getName());
         viewHolder.itemAge.setText("Age: "+activity.getAge());
         Picasso.get().load(activity.getImage()).into(viewHolder.itemImage);
-        //viewHolder.itemImage.setImageResource(images[i]);
     }
 
     @Override

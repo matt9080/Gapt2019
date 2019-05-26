@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -28,7 +27,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -37,15 +35,14 @@ public class StepsFragment extends Fragment {
     private TextView textcontent;
     private TextView textlabel;
     private ImageView imageview;
+
     public StepsFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = null;
         String steps_text = getArguments().getString("steps_text");
         switch(getArguments().getString("steps_type")) {
@@ -117,7 +114,6 @@ public class StepsFragment extends Fragment {
                 rb8.setText(q3[list.get(1)]);
                 rb9.setText(q3[list.get(2)]);
 
-
                 final View finalView = view;
                 button.setOnClickListener(new View.OnClickListener() {
 
@@ -152,23 +148,18 @@ public class StepsFragment extends Fragment {
                             DocumentReference userupdate = db.collection("users").document(user.getUid());
                             userupdate.update("lessonscompleted", FieldValue.arrayUnion(HomeFragment.activity.getID()));
                             getActivity().finish();
-                            Intent myIntent1 = new Intent(getActivity(), MainTestActivity.class);
+                            Intent myIntent1 = new Intent(getActivity(), MainFunctionsActivity.class);
                             getActivity().startActivity(myIntent1);
                         }else{
                             Toast.makeText(getActivity(), rightans+"/3 answers right. Try again.", Toast.LENGTH_SHORT).show();
                         }
-
-
                     }
                 });
-
                 break;
-
             default:
                 // code block
         }
 
-        //imageview.setImageDrawable(LoadImageFromWebOperations()));
         // Inflate the layout for this fragment
         return view;
     }
@@ -182,5 +173,4 @@ public class StepsFragment extends Fragment {
             return null;
         }
     }
-
 }

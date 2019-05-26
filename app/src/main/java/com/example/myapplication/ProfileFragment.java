@@ -50,7 +50,6 @@ import java.util.stream.Collectors;
 
 import static android.app.Activity.RESULT_OK;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -74,13 +73,10 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
-
+        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         profileView = (ImageView) v.findViewById(R.id.profilepic);
         username = (TextView) v.findViewById(R.id.profileUsername);
@@ -107,11 +103,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         });
 
         return v;
-
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_profile, container, false);
     }
-
 
     private void loadUserInformation() {
         user = mAuth.getCurrentUser();
@@ -141,14 +133,12 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
 
-
                         try {
                             doneWithDuplicates = (List<String>) document.getData().get("lessonscompleted");
                             ldone = doneWithDuplicates.stream().distinct().collect(Collectors.toList()).size();
                         }catch(Exception x){
                             ldone=0;
                         }
-
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                     } else {
                         Log.d(TAG, "No such document");
@@ -160,8 +150,6 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                 loadbadges(getView());
             }
         });
-
-
     }
 
     private int ldone = 0;
@@ -182,8 +170,6 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-
-
 
         if (user.isEmailVerified()) {
             badge1.setOnClickListener(new View.OnClickListener() {
@@ -270,16 +256,13 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         lessons.setText("");
         //lessons
         //List<String> doneWithoutDuplicates = doneWithDuplicates.to.stream().distinct().collect(Collectors.toList()).toArray();
-        for (int i = 0; i< HomeFragment.usersList.size(); i++){
+        for (int i = 0; i< HomeFragment.m_usersList.size(); i++){
             for (int j=0 ;j<ldone;j++) {
-
-                if (doneWithDuplicates.stream().distinct().collect(Collectors.toList()).get(j).equals(HomeFragment.usersList.get(i).getID())) {
-                    lessons.setText(lessons.getText() + "\n" + HomeFragment.usersList.get(i).getName());
+                if (doneWithDuplicates.stream().distinct().collect(Collectors.toList()).get(j).equals(HomeFragment.m_usersList.get(i).getID())) {
+                    lessons.setText(lessons.getText() + "\n" + HomeFragment.m_usersList.get(i).getName());
                 }
-
             }
         }
-
         return v;
     }
 
@@ -561,9 +544,6 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         alert.show();
     }
 
-
-
-
     private void saveUserInformation() {
 
         FirebaseUser user = mAuth.getCurrentUser();
@@ -583,8 +563,6 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                         }
                     });
         }
-
-
     }
 
     @Override
@@ -603,8 +581,6 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
         }
     }
 
@@ -689,47 +665,6 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                 }
             });
 
-
-/*
-
-            profileImageRef.putFile(uriProfileImage)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //progressBar.setVisibility(View.GONE);
-
-                            profileImageRef =
-                                    FirebaseStorage.getInstance().getReference("profilepics/" + user.getUid() + ".jpg");
-                            profileImageUrl = profileImageRef.getDownloadUrl().toString();
-
-
-                            FirebaseStorage.getInstance().getReference().child("profilepics/" + user.getUid() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                    // Update one field, creating the document if it does not already exist.
-                                    Map<String, Object> data = new HashMap<>();
-                                    data.put("image", profileImageUrl);
-
-                                    db.collection("users").document(user.getUid())
-                                            .set(data, SetOptions.merge());
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                    // Handle any errors
-                                }
-                            });
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            //progressBar.setVisibility(View.GONE);
-
-                        }
-                    });*/
         }
 
     }
@@ -740,5 +675,4 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Image"), CHOOSE_IMAGE);
     }
-
 }
