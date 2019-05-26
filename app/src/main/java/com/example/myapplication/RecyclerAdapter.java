@@ -38,7 +38,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             itemImage = (ImageView)itemView.findViewById(R.id.item_image);
             itemName = (TextView) itemView.findViewById(R.id.item_title);
             itemAge = (TextView) itemView.findViewById(R.id.item_age);
-
+            itemshortDesc = (TextView) itemView.findViewById(R.id.item_desc);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -68,6 +68,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         activity = activitiesList.get(i);
         viewHolder.itemName.setText(activity.getName());
         viewHolder.itemAge.setText("Age: "+activity.getAge());
+        viewHolder.itemshortDesc.setText(activity.getShortDescription());
         Picasso.get().load(activity.getImage()).into(viewHolder.itemImage);
     }
 
