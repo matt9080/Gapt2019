@@ -1,22 +1,14 @@
 package com.example.myapplication;
 
-
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Activities {
     private String age, id, name, shortDescription, image, level;
     private List<String> steps_type, steps_text, steps_image, questions;
 
-
     public Activities(){
         //empty constructor
     }
-
-
-
 
     public Activities(List<String> steps_type, List<String> steps_text, List<String> steps_image, List<String> questions, String age, String level, String image, String id, String name, String shortDescription){
 
@@ -73,7 +65,5 @@ public class Activities {
     public List<String> getSteps_image() {
         return steps_image;
     }
-
-
 
 }

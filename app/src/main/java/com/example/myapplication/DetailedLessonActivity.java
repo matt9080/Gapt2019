@@ -1,10 +1,10 @@
 package com.example.myapplication;
 
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 
 public class DetailedLessonActivity extends AppCompatActivity  implements View.OnClickListener {
 
@@ -12,32 +12,28 @@ public class DetailedLessonActivity extends AppCompatActivity  implements View.O
     private TextView title;
     private StepsFragmentCollection adapter;
 
+    //class to display full lesson details
     @Override
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fulllesson_view);
         viewPager = findViewById(R.id.viewpager);
-        title = findViewById(R.id.lessonTitle);
+        title = findViewById(R.id.txt_lesson_title);
         title.setText(HomeFragment.activity.getName());
         adapter = new StepsFragmentCollection(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-        findViewById(R.id.button2).setOnClickListener(this);
-        findViewById(R.id.button).setOnClickListener(this);
-        
-
+        findViewById(R.id.btn_arrow_left).setOnClickListener(this);
+        findViewById(R.id.btn_arrow_right).setOnClickListener(this);
     }
 
     public void onClick(View view) {
         switch (view.getId()) {
-
-
-            case R.id.button2:
+            case R.id.btn_arrow_left:
                 viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
                 break;
-            case R.id.button:
+            case R.id.btn_arrow_right:
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
                 break;
         }
     }
-
 }

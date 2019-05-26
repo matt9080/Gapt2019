@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -24,7 +22,6 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
 
     private static final String TAG = "HorizontalViewAdapter";
 
-    public static Activities activity;
     private List<Activities> mActivityList;
     private Context mContext;
     private OnItemClickListener mListener;
@@ -49,12 +46,7 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
                 .load(mActivityList.get(position).getImage())
                 .into(holder.image);
 
-
-
-
         holder.name.setText(mActivityList.get(position).getName());
-
-
     }
     public interface OnItemClickListener{
         void onItemClick(int position);

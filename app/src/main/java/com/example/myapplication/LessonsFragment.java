@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,23 +39,22 @@ public class LessonsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_lesson, container, false);
-    mFirestore = FirebaseFirestore.getInstance();
+        mFirestore = FirebaseFirestore.getInstance();
 
-    recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
-    layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new RecyclerAdapter(HomeFragment.usersList);
+        adapter = new RecyclerAdapter(HomeFragment.m_usersList);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemCLickListener(new RecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                HomeFragment.usersList.get(position);
-                HomeFragment.activity = HomeFragment.usersList.get(position);
+                HomeFragment.m_usersList.get(position);
+                HomeFragment.activity = HomeFragment.m_usersList.get(position);
                 Intent myIntent = new Intent(getActivity(), DetailedLessonActivity.class);
                 startActivity(myIntent);
                 adapter.notifyItemChanged(position);
@@ -75,9 +69,9 @@ public class LessonsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 newusersList = new ArrayList<>();
-                for (int i = 0; i < HomeFragment.usersList.size(); i++){
-                    if (HomeFragment.usersList.get(i).getName().toLowerCase().contains(searchText.getText().toString().toLowerCase())){
-                        newusersList.add(HomeFragment.usersList.get(i));
+                for (int i = 0; i < HomeFragment.m_usersList.size(); i++){
+                    if (HomeFragment.m_usersList.get(i).getName().toLowerCase().contains(searchText.getText().toString().toLowerCase())){
+                        newusersList.add(HomeFragment.m_usersList.get(i));
                     }
                 }
                 if(newusersList.size()>0){
@@ -86,12 +80,10 @@ public class LessonsFragment extends Fragment {
                 }else{
                     Toast.makeText(getActivity(), "No results found", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
-
         return v;
-}
+    }
 
     protected void OnStart(){
         super.onStart();

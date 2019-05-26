@@ -47,7 +47,6 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
 
         mAuth = FirebaseAuth.getInstance();
 
-
         Button btn = (Button) findViewById(R.id.btn_su);
         btn.setOnClickListener(this);
     }
@@ -127,9 +126,8 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
                                 }
                             });
 
-
                     finish();
-                    Intent intent = new Intent(SignUpActivity.this, MainTestActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this, MainFunctionsActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
@@ -140,7 +138,6 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
                     } else {
                         Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-
                 }
             }
         });
@@ -153,8 +150,6 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
             case R.id.btn_su:
                 registerUser();
                 break;
-
-
         }
     }
 }

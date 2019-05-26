@@ -13,8 +13,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity implements
         View.OnClickListener{
 
-    private ConstraintLayout layout_login; //to use
-    private ConstraintLayout layout_home;   //to use
     FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +59,14 @@ public class MainActivity extends AppCompatActivity implements
                 if (user.getDisplayName() == null || user.getDisplayName().equals("")) {
                     startActivity(new Intent(this, EditProfileActivity.class));
                 } else {
-                    startActivity(new Intent(this, MainTestActivity.class));
+                    startActivity(new Intent(this, MainFunctionsActivity.class));
                 }
-
-
         }
     }
 
     protected void onResume() {
         super.onResume();
     }
-
     protected void onPause() {
         super.onPause();
     }
