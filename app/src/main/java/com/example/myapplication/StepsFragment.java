@@ -2,7 +2,9 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +15,29 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StepsFragment extends Fragment {
 
+    private static final String TAG = "StepsFragment";
     private TextView textcontent;
     private TextView textlabel;
     private ImageView imageview;
+    private List<String> lessonsdone;
 
     public StepsFragment() {
     }
@@ -103,9 +112,11 @@ public class StepsFragment extends Fragment {
                 rb1.setText(q1[list.get(0)]);
                 rb2.setText(q1[list.get(1)]);
                 rb3.setText(q1[list.get(2)]);
+                Collections.shuffle(list);
                 rb4.setText(q2[list.get(0)]);
                 rb5.setText(q2[list.get(1)]);
                 rb6.setText(q2[list.get(2)]);
+                Collections.shuffle(list);
                 rb7.setText(q3[list.get(0)]);
                 rb8.setText(q3[list.get(1)]);
                 rb9.setText(q3[list.get(2)]);
@@ -142,14 +153,50 @@ public class StepsFragment extends Fragment {
                         //if all are correct the lesson is added to the users completed lessons
                         if (rightans == 3){
                             Toast.makeText(getActivity(), "Lesson complete", Toast.LENGTH_SHORT).show();
+
+
                             FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            final FirebaseUser user = mAuth.getCurrentUser();
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            DocumentReference userupdate = db.collection("users").document(user.getUid());
-                            userupdate.update("lessonscompleted", FieldValue.arrayUnion(HomeFragment.curr_activity.getID()));
-                            getActivity().finish();
-                            Intent myIntent1 = new Intent(getActivity(), MainFunctionsActivity.class);
-                            getActivity().startActivity(myIntent1);
+                            DocumentReference docRef = db.collection("users").document(user.getUid());
+                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            //checking if lesson has already been completed
+
+                                            try {
+                                                lessonsdone = (List<String>) document.getData().get("lessonscompleted");
+                                                if (lessonsdone.contains(HomeFragment.curr_activity.getID())) {
+                                                    //do nothing
+                                                } else {
+                                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                                    DocumentReference userupdate = db.collection("users").document(user.getUid());
+                                                    userupdate.update("lessonscompleted", FieldValue.arrayUnion(HomeFragment.curr_activity.getID()));
+                                                }
+                                            }catch(Exception x){
+                                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                                DocumentReference userupdate = db.collection("users").document(user.getUid());
+                                                userupdate.update("lessonscompleted", FieldValue.arrayUnion(HomeFragment.curr_activity.getID()));
+
+                                            }
+
+                                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                        } else {
+                                            Log.d(TAG, "No such document");
+
+                                        }
+                                    } else {
+                                        Log.d(TAG, "get failed with ", task.getException());
+                                    }
+                                    getActivity().finish();
+                                    Intent myIntent1 = new Intent(getActivity(), MainFunctionsActivity.class);
+                                    getActivity().startActivity(myIntent1);
+                                }
+                            });
+
                         }else{
                             Toast.makeText(getActivity(), rightans+"/3 answers right. Try again.", Toast.LENGTH_SHORT).show();
                         }

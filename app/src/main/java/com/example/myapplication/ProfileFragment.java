@@ -137,10 +137,10 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                     if (document.exists()) {
 
                         try {
-                            doneWithDuplicates = (List<String>) document.getData().get("lessonscompleted");
-                            ldone = doneWithDuplicates.stream().distinct().collect(Collectors.toList()).size();
+                            lessonscompleted = (List<String>) document.getData().get("lessonscompleted");
+                            lessonscompletedsize = lessonscompleted.size();
                         }catch(Exception x){
-                            ldone=0;
+                            lessonscompletedsize=0;
                         }
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                     } else {
@@ -155,8 +155,8 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         });
     }
 
-    private int ldone = 0;
-    private List<String> doneWithDuplicates;
+    private int lessonscompletedsize = 0;
+    private List<String> lessonscompleted;
 
     //method to load the badges
     private View loadbadges(View v) {
@@ -203,7 +203,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         }
 
         //badge 2: checking if user completed 1 lesson
-        if (ldone>=1) {
+        if (lessonscompletedsize>=1) {
             badge2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -226,7 +226,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
         }
         //badge 3: checking if user completed 5 lessons
-        if(ldone>=5){
+        if(lessonscompletedsize>=5){
             badge3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -266,8 +266,8 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         lessons.setText("");
         //listing all competed lessons
         for (int i = 0; i< HomeFragment.m_activitiesList.size(); i++){
-            for (int j=0 ;j<ldone;j++) {
-                if (doneWithDuplicates.stream().distinct().collect(Collectors.toList()).get(j).equals(HomeFragment.m_activitiesList.get(i).getID())) {
+            for (int j=0 ;j<lessonscompletedsize;j++) {
+                if (lessonscompleted.get(j).equals(HomeFragment.m_activitiesList.get(i).getID())) {
                     lessons.setText(lessons.getText() + "\n" + HomeFragment.m_activitiesList.get(i).getName());
                 }
             }
