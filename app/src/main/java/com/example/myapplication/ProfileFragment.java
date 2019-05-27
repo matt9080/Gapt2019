@@ -502,7 +502,7 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                             return;
                         }
 
-                        if (input1.getText().toString().length() < 4 || input1.getText().toString().length() > 16 ) {
+                        if (input1.getText().toString().length() < 3 || input1.getText().toString().length() > 16 ) {
                             Toast.makeText(getActivity(), "Length should be between 4 and 16 characters", Toast.LENGTH_SHORT).show();
                             changeUsername();
                             return;

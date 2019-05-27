@@ -87,7 +87,7 @@ public class SignUpActivity extends AppCompatActivity  implements View.OnClickLi
             return;
         }
 
-        if (username.length() < 4 || username.length() > 16 ) {
+        if (username.length() < 3 || username.length() > 16 ) {
             editTextUsername.setError("Length should be between 4 and 16 characters");
             editTextUsername.requestFocus();
             return;
