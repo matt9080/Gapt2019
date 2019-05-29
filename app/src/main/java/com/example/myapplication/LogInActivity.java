@@ -122,35 +122,49 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         input2.setVisibility(View.GONE);
 
         //setting up the dialog window
-        alertDialogBuilder.setCancelable(false)
+        alertDialogBuilder.setCancelable(true)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+        });
+
+        final AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
                 if (input1.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Email required", Toast.LENGTH_SHORT).show();
+                    input1.setError("Email required");
+                    input1.requestFocus();
                     return;
                 }
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 //sending an password reset link to the users email
                 auth.sendPasswordResetEmail(input1.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(), "Reset Password Email Sent", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), "Reset Password Email Sent", Toast.LENGTH_SHORT).show();
+                                    alert.dismiss();
+                                } else {
+                                    input1.setError(task.getException().getMessage());
+                                    input1.requestFocus();
+                                    return;
+                                }
                             }
-                        }
-                });
-                }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-        });
+                        });
 
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
+                //else dialog stays open. Make sure you have an obvious way to close the dialog especially if you set cancellable to false.
+            }
+        });
     }
 
 }

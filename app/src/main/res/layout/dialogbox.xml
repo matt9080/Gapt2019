@@ -30,6 +30,10 @@
         android:layout_marginBottom="4dp"
         android:inputType="textEmailAddress" />
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
     <EditText
         android:id="@+id/input2"
         android:layout_width="match_parent"
@@ -41,5 +45,9 @@
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif"
         android:inputType="textPassword" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
 
 </LinearLayout>

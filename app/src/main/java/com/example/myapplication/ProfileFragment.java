@@ -322,53 +322,9 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         final EditText input2 = (EditText) promptView.findViewById(R.id.input2);
         input2.setHint("New Password...");
         // setup a dialog window
-        alertDialogBuilder.setCancelable(false)
+        alertDialogBuilder.setCancelable(true)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (input1.getText().toString().isEmpty()) {
-                            Toast.makeText(getActivity(), "Old password required", Toast.LENGTH_SHORT).show();
-                            changePassword();
-                            return;
-
-                        }
-                        if (input2.getText().toString().isEmpty()) {
-                            Toast.makeText(getActivity(), "New password required", Toast.LENGTH_SHORT).show();
-                            changePassword();
-                            return;
-                        }
-                        if (input2.length() < 6) {
-                            Toast.makeText(getActivity(), "Minimum length of the new password should be 6", Toast.LENGTH_SHORT).show();
-                            changePassword();
-                            return;
-                        }
-
-                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                        AuthCredential credential = EmailAuthProvider
-                                .getCredential(user.getEmail(), input1.getText().toString());
-
-                        user.reauthenticate(credential)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            // updating password in firebase authentication
-                                            user.updatePassword(input2.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Toast.makeText(getActivity(), "Password updated", Toast.LENGTH_SHORT).show();
-                                                    } else {
-                                                        Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-                                            });
-                                        } else {
-                                            Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    }
-                                });
 
                     }
                 })
@@ -380,8 +336,67 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                         });
 
         // create an alert dialog
-        AlertDialog alert = alertDialogBuilder.create();
+        final AlertDialog alert = alertDialogBuilder.create();
         alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (input1.getText().toString().isEmpty()) {
+                    input1.setError("Old password required");
+                    input1.requestFocus();
+                    return;
+
+                }
+                if (input2.getText().toString().isEmpty()) {
+                    input2.setError("New password required");
+                    input2.requestFocus();
+                    return;
+                }
+                if (input2.length() < 6) {
+                    input2.setError("Minimum length of the new password should be 6");
+                    input2.requestFocus();
+                    return;
+                }
+
+                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                AuthCredential credential = EmailAuthProvider
+                        .getCredential(user.getEmail(), input1.getText().toString());
+
+                user.reauthenticate(credential)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    // updating password in firebase authentication
+                                    user.updatePassword(input2.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(getActivity(), "Password updated", Toast.LENGTH_SHORT).show();
+                                                alert.dismiss();
+                                            } else {
+                                                input1.setError(task.getException().getMessage());
+                                                input1.requestFocus();
+                                                return;
+
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    input1.setError(task.getException().getMessage());
+                                    input1.requestFocus();
+                                    return;
+
+                                }
+                            }
+                        });
+
+
+            }
+        });
     }
 
     //method to create a custom alert dialog based on dialogbox.xml to handle email changes
@@ -399,70 +414,10 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
         final EditText input2 = (EditText) promptView.findViewById(R.id.input2);
         input2.setHint("Password...");
         // setup a dialog window
-        alertDialogBuilder.setCancelable(false)
+        alertDialogBuilder.setCancelable(true)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (input1.getText().toString().isEmpty()) {
-                            Toast.makeText(getActivity(), "New email required", Toast.LENGTH_SHORT).show();
-                            changeEmail();
-                            return;
-                        }
-                        if (input2.getText().toString().isEmpty()) {
-                            Toast.makeText(getActivity(), "Password required", Toast.LENGTH_SHORT).show();
-                            changeEmail();
-                            return;
-                        }
-                        if (!Patterns.EMAIL_ADDRESS.matcher(input1.getText().toString()).matches()) {
-                            Toast.makeText(getActivity(), "Please enter a valid email", Toast.LENGTH_SHORT).show();
-                            changeEmail();
-                            return;
-                        }
 
-                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                        AuthCredential credential = EmailAuthProvider
-                                .getCredential(user.getEmail(), input2.getText().toString());
-
-                        user.reauthenticate(credential)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            // updating email in in firebase authentication
-                                            user.updateEmail(input1.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Toast.makeText(getActivity(), "Email updated", Toast.LENGTH_SHORT).show();
-                                                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                                        DocumentReference updateuser = db.collection("users").document(user.getUid());
-
-                                                        // updating email in in firestore
-                                                        updateuser
-                                                                .update("email", input1.getText().toString())
-                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                    @Override
-                                                                    public void onSuccess(Void aVoid) {
-                                                                        Log.d(TAG, "DocumentSnapshot successfully updated!");
-                                                                    }
-                                                                })
-                                                                .addOnFailureListener(new OnFailureListener() {
-                                                                    @Override
-                                                                    public void onFailure(@NonNull Exception e) {
-                                                                        Log.w(TAG, "Error updating document", e);
-                                                                    }
-                                                                });
-                                                    } else {
-                                                        Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-                                            });
-                                        } else {
-                                            Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    }
-                                });
 
                     }
                 })
@@ -474,8 +429,83 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                         });
 
         // create an alert dialog
-        AlertDialog alert = alertDialogBuilder.create();
+        final AlertDialog alert = alertDialogBuilder.create();
         alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (input1.getText().toString().isEmpty()) {
+                    input1.setError("New email required");
+                    input1.requestFocus();
+                    return;
+                }
+                if (input2.getText().toString().isEmpty()) {
+                    input2.setError("Password required");
+                    input2.requestFocus();
+                    return;
+                }
+                if (!Patterns.EMAIL_ADDRESS.matcher(input1.getText().toString()).matches()) {
+                    input1.setError("Please enter a valid email");
+                    input1.requestFocus();
+                    return;
+                }
+
+                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                AuthCredential credential = EmailAuthProvider
+                        .getCredential(user.getEmail(), input2.getText().toString());
+
+                user.reauthenticate(credential)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    // updating email in in firebase authentication
+                                    user.updateEmail(input1.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+
+                                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                                DocumentReference updateuser = db.collection("users").document(user.getUid());
+
+                                                // updating email in in firestore
+                                                updateuser
+                                                        .update("email", input1.getText().toString())
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.w(TAG, "Error updating document", e);
+                                                            }
+                                                        });
+                                                Toast.makeText(getActivity(), "Email updated", Toast.LENGTH_SHORT).show();
+                                                alert.dismiss();
+                                            } else {
+                                                input1.setError(task.getException().getMessage());
+                                                input1.requestFocus();
+                                                return;
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    input2.setError(task.getException().getMessage());
+                                    input2.requestFocus();
+                                    return;
+
+                                }
+                            }
+                        });
+
+            }
+        });
     }
 
     //method to create a custom alert dialog based on dialogbox.xml to handle username changes
@@ -483,68 +513,23 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         View promptView = layoutInflater.inflate(R.layout.dialogbox, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
+                .setPositiveButton(android.R.string.ok, null);
         alertDialogBuilder.setView(promptView);
 
         final TextView title = (TextView) promptView.findViewById(R.id.dialogboxTitle);
         title.setText("Change Username");
         final EditText input1 = (EditText) promptView.findViewById(R.id.input1);
         input1.setHint("New Username...");
+
         final EditText input2 = (EditText) promptView.findViewById(R.id.input2);
         input2.setVisibility(View.GONE);
         // setup a dialog window
-        alertDialogBuilder.setCancelable(false)
+
+        alertDialogBuilder.setCancelable(true)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (input1.getText().toString().isEmpty()) {
-                            Toast.makeText(getActivity(), "Name required", Toast.LENGTH_SHORT).show();
-                            changeUsername();
-                            return;
-                        }
 
-                        if (input1.getText().toString().length() < 3 || input1.getText().toString().length() > 16 ) {
-                            Toast.makeText(getActivity(), "Length should be between 4 and 16 characters", Toast.LENGTH_SHORT).show();
-                            changeUsername();
-                            return;
-                        }
-
-                        FirebaseUser user = mAuth.getCurrentUser();
-
-                        if (user != null) {
-                            // updating display name in firebase authentication
-                            UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(input1.getText().toString())
-                                    .build();
-
-                            user.updateProfile(profile)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                loadUserInformation();
-                                            }
-                                        }
-                                    });
-
-                            FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            DocumentReference updateuser = db.collection("users").document(user.getUid());
-
-                            // updating display name in firestore
-                            updateuser
-                                    .update("name", input1.getText().toString())
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d(TAG, "DocumentSnapshot successfully updated!");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w(TAG, "Error updating document", e);
-                                        }
-                                    });
-                        }
                     }
                 })
                 .setNegativeButton("Cancel",
@@ -555,8 +540,65 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                         });
 
         // create an alert dialog
-        AlertDialog alert = alertDialogBuilder.create();
+        final AlertDialog alert = alertDialogBuilder.create();
         alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (input1.getText().toString().isEmpty()) {
+                    input1.setError("Username is required");
+                    input1.requestFocus();
+                    return;
+                }
+
+                if (input1.getText().toString().length() < 3 || input1.getText().toString().length() > 16 ) {
+                    input1.setError("Length should be between 3 and 16 characters");
+                    input1.requestFocus();
+                    return;
+                }
+
+                FirebaseUser user = mAuth.getCurrentUser();
+
+                if (user != null) {
+                    // updating display name in firebase authentication
+                    UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(input1.getText().toString())
+                            .build();
+
+                    user.updateProfile(profile)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        loadUserInformation();
+                                    }
+                                }
+                            });
+
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    DocumentReference updateuser = db.collection("users").document(user.getUid());
+
+                    // updating display name in firestore
+                    updateuser
+                            .update("name", input1.getText().toString())
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error updating document", e);
+                                }
+                            });
+                    alert.dismiss();
+                }
+            }
+        });
     }
 
     //method to save users new photo url in firebase authentication
