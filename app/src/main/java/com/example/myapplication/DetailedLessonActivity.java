@@ -1,20 +1,25 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-public class DetailedLessonActivity extends AppCompatActivity  implements View.OnClickListener {
+public class DetailedLessonActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private TextView title;
     private StepsFragmentCollection adapter;
+    private ImageView swipe;
 
     //class to display lesson details, adds the fragments to the view pager
     @Override
-    protected void onCreate (Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fulllesson_view);
         viewPager = findViewById(R.id.viewpager);
@@ -22,19 +27,62 @@ public class DetailedLessonActivity extends AppCompatActivity  implements View.O
         title.setText(HomeFragment.curr_activity.getName());
         adapter = new StepsFragmentCollection(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-        findViewById(R.id.btn_arrow_left).setOnClickListener(this);
-        findViewById(R.id.btn_arrow_right).setOnClickListener(this);
+
+
+        swipe = findViewById(R.id.swipe);
+        final Animation myFadeInAnimation0 = AnimationUtils.loadAnimation(this, R.anim.fadein);
+        final Animation myFadeInAnimation1 = AnimationUtils.loadAnimation(this, R.anim.fadein);
+        final Animation myFadeOutAnimation0 = AnimationUtils.loadAnimation(this, R.anim.fadeout);
+        final Animation myFadeOutAnimation1 = AnimationUtils.loadAnimation(this, R.anim.fadeout);
+
+        myFadeInAnimation0.setAnimationListener(new Animation.AnimationListener() {
+
+            public void onAnimationStart(Animation animation) { }
+            public void onAnimationRepeat(Animation animation) { }
+            public void onAnimationEnd(Animation animation) {
+                swipe.startAnimation(myFadeOutAnimation0);
+                return;
+            }
+        });
+        myFadeOutAnimation0.setAnimationListener(new Animation.AnimationListener() {
+
+            public void onAnimationStart(Animation animation) { }
+            public void onAnimationRepeat(Animation animation) { }
+            public void onAnimationEnd(Animation animation) {
+                swipe.startAnimation(myFadeInAnimation1);
+                return;
+            }
+        });
+        myFadeInAnimation1.setAnimationListener(new Animation.AnimationListener() {
+
+            public void onAnimationStart(Animation animation) { }
+            public void onAnimationRepeat(Animation animation) { }
+            public void onAnimationEnd(Animation animation) {
+                swipe.startAnimation(myFadeOutAnimation1);
+                return;
+            }
+        });
+        myFadeOutAnimation1.setAnimationListener(new Animation.AnimationListener() {
+
+            public void onAnimationStart(Animation animation) { }
+            public void onAnimationRepeat(Animation animation) { }
+            public void onAnimationEnd(Animation animation) {
+                swipe.setVisibility(View.GONE);
+                return;
+            }
+        });
+        swipe.startAnimation(myFadeInAnimation0);
+
+        /*new CountDownTimer(2000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                swipe.setVisibility(View.GONE);
+            }
+        }.start();*/
+
     }
 
-    //click listeners for the page changer buttons
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_arrow_left:
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
-                break;
-            case R.id.btn_arrow_right:
-                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-                break;
-        }
-    }
 }
