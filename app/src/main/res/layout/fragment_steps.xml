@@ -28,12 +28,8 @@
                 android:id="@+id/text_label"
                 android:layout_width="match_parent"
                 android:layout_height="76dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
                 android:layout_weight="10"
                 android:background="@drawable/rounded_corner"
                 android:gravity="center"
@@ -41,28 +37,36 @@
                 android:textColor="@color/white"
                 android:textSize="36sp" />
 
-            <ImageView
-                android:id="@+id/image_howto"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="232dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginBottom="16dp"
-                android:layout_weight="20"
-                tools:src="@tools:sample/avatars" />
+                android:layout_weight="10"
+                app:cardCornerRadius="20dp">
+
+                <ImageView
+                    android:id="@+id/image_howto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:scaleType="centerCrop"
+                    tools:src="@tools:sample/avatars" />
+
+            </android.support.v7.widget.CardView>
 
             <TextView
                 android:id="@+id/text_content"
                 android:layout_width="match_parent"
-                android:layout_height="195dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_height="214dp"
                 android:layout_marginBottom="16dp"
                 android:layout_weight="20"
+                android:background="@drawable/rounded_corner"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:text="TextView"
-                app:autoSizeMaxTextSize="38dp"
+                android:textColor="@color/white"
+                app:autoSizeMaxTextSize="30dp"
                 app:autoSizeTextType="uniform" />
 
             <Space

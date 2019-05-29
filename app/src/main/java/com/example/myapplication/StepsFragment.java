@@ -56,9 +56,9 @@ public class StepsFragment extends Fragment {
                 textcontent = view.findViewById(R.id.text_content);
                 String[] howto = (getArguments().getString("steps_text")).split(":");
                 if(howto[0].toLowerCase().contains("items")){
-                    textcontent.setText("");
-                    for(int i =1; i<howto.length;i++){
-                        textcontent.setText(textcontent.getText()+"• "+howto[i]+"\n");
+                    textcontent.setText("• "+howto[1]);
+                    for(int i =2; i<howto.length-1;i++){
+                        textcontent.setText(textcontent.getText()+"\n"+"• "+howto[i]);
                     }
                 }else{
 
