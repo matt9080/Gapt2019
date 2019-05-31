@@ -126,8 +126,8 @@
                 android:layout_width="348dp"
                 android:layout_height="151dp"
                 android:layout_margin="10dp"
-                app:cardBackgroundColor="#468FF5"
-                app:cardCornerRadius="10dp"
+                app:cardBackgroundColor="#00FFFFFF"
+                app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/cardView7"
                 app:layout_constraintEnd_toEndOf="@+id/cardView7"
                 app:layout_constraintStart_toStartOf="@+id/cardView7"
@@ -135,7 +135,8 @@
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_corner">
 
                     <TextView
                         android:id="@+id/textView14"
@@ -214,8 +215,8 @@
                 android:layout_margin="10dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="10dp"
-                app:cardBackgroundColor="#468FF5"
-                app:cardCornerRadius="10dp"
+                app:cardBackgroundColor="#00FFFFFF"
+                app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -223,7 +224,8 @@
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_corner">
 
                     <TextView
                         android:id="@+id/textView16"
@@ -321,9 +323,9 @@
                 android:layout_width="348dp"
                 android:layout_height="151dp"
                 android:layout_margin="10dp"
-                android:layout_marginTop="24dp"
-                app:cardBackgroundColor="#468FF5"
-                app:cardCornerRadius="10dp"
+                android:layout_marginTop="32dp"
+                app:cardBackgroundColor="#00FFFFFF"
+                app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/cardView5"
                 app:layout_constraintEnd_toEndOf="@+id/cardView5"
                 app:layout_constraintStart_toStartOf="@+id/cardView5"
@@ -333,6 +335,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="8dp"
+                    android:background="@drawable/rounded_corner"
                     app:layout_constraintBottom_toBottomOf="parent">
 
                     <TextView

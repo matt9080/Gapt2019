@@ -11,9 +11,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="35dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/enter_textbox"
         android:ems="10"
         android:hint="Email..."
@@ -25,6 +25,7 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/pass_textbox"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view"
         app:layout_constraintVertical_bias="0.534" />
@@ -34,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="35dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/enter_textbox"
@@ -48,6 +49,7 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/forgotPassword"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email_textbox" />
 
@@ -58,7 +60,9 @@
         android:layout_marginStart="73dp"
         android:layout_marginTop="140dp"
         android:layout_marginEnd="72dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/logo"
+        app:layout_constraintBottom_toTopOf="@+id/email_textbox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -68,16 +72,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="116dp"
         android:background="@drawable/signin_button"
         android:inputType="none"
         android:text="LOG IN"
-        android:textColor="@color/common_google_signin_btn_text_light"
+        android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forgotPassword" />
 
     <ProgressBar
         android:id="@+id/su_progressBar"
@@ -100,6 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="40dp"
         android:background="@null"
@@ -109,6 +116,7 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_su"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pass_textbox" />
 
 </android.support.constraint.ConstraintLayout>
