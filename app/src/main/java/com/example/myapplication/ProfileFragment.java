@@ -302,6 +302,10 @@ public class ProfileFragment extends Fragment implements PopupMenu.OnMenuItemCli
                 getActivity().startActivity(myIntent1);
                 Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.about:
+                Intent myIntent2 = new Intent(getActivity(), AboutActivity.class);
+                getActivity().startActivity(myIntent2);
+                return true;
             default:
                 return false;
         }

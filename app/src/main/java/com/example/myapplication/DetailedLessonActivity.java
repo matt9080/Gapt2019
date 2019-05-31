@@ -1,10 +1,12 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.view.ViewPager;
@@ -16,6 +18,7 @@ public class DetailedLessonActivity extends AppCompatActivity {
     private TextView title;
     private StepsFragmentCollection adapter;
     private ImageView swipe;
+    private Button video;
 
     //class to display lesson details, adds the fragments to the view pager
     @Override
@@ -27,7 +30,16 @@ public class DetailedLessonActivity extends AppCompatActivity {
         title.setText(HomeFragment.curr_activity.getName());
         adapter = new StepsFragmentCollection(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+        video = findViewById(R.id.video);
 
+        video.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(DetailedLessonActivity.this, VideoActivity.class);
+                startActivity(myIntent);
+            }
+        });
 
         swipe = findViewById(R.id.swipe);
         final Animation myFadeInAnimation0 = AnimationUtils.loadAnimation(this, R.anim.fadein);

@@ -16,5 +16,8 @@
     <item
         android:id="@+id/popupLogout"
         android:title="Logout" />
+    <item
+        android:id="@+id/about"
+        android:title="About" />
 
 </menu>

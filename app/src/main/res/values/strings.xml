@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="facebook_application_id" translatable="false">53254365264565462</string>
+    <string name="test" translatable="false">965688635583-in8qbknhrhuakajl13emp1ni6lk4et8b.apps.googleusercontent.com</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

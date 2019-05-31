@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -64,17 +65,24 @@ public class LessonsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                List<Activities> search_activityList;
-                search_activityList = new ArrayList<>();
+                HashSet<Activities> search_activityList;
+                search_activityList = new HashSet<>();
 
-                //iterate through main activities list, a get searched items
-                for (int i = 0; i < HomeFragment.m_activitiesList.size(); i++){
-                    if (HomeFragment.m_activitiesList.get(i).getName().toLowerCase().contains(searchText.getText().toString().toLowerCase())){
-                        search_activityList.add(HomeFragment.m_activitiesList.get(i));
+                String[] words = searchText.getText().toString().split("\\W+");
+
+                for(String s : words){
+                    //iterate through main activities list, a get searched items
+                    for (int i = 0; i < HomeFragment.m_activitiesList.size(); i++){
+                        if (HomeFragment.m_activitiesList.get(i).getName().toLowerCase().contains(s.toLowerCase())){
+                            search_activityList.add(HomeFragment.m_activitiesList.get(i));
+                        }
                     }
                 }
+
+
+                List<Activities> search_activityList1 = new ArrayList<Activities>(search_activityList);
                 if(search_activityList.size()>0){   //create a recyclerview with results
-                    adapter = new RecyclerAdapter(search_activityList);
+                    adapter = new RecyclerAdapter(search_activityList1);
                     recyclerView.setAdapter(adapter);
                 }else{
                     Toast.makeText(getActivity(), "No results found", Toast.LENGTH_SHORT).show();
